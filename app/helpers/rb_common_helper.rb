@@ -135,8 +135,6 @@ module RbCommonHelper
 
   def priority_name_or_empty(item)
      @enumeration = Enumeration.find(item.priority_id)
-     puts("**********************************************")
-     puts(@enumeration)
      item.priority_id.nil? ? '' : @enumeration.name
   end
 
