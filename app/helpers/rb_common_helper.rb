@@ -189,11 +189,6 @@ module RbCommonHelper
     ret.html_safe
   end
 
-  def get_task_type(task)
-    @type = Type.where(["id = ?",  @task.type_id]).last
-    return @type.name
-  end
-
   private
 
   def new_record_status
