@@ -134,7 +134,7 @@ module RbCommonHelper
   end
 
   def priority_name_or_empty(story)
-    story.priority.nil? ? '' : h(backlogs_priorities_by_id[story.priority_id].name)
+    story.priority_id.nil? ? '' : h(backlogs_priorities_by_id[story.priority_id].name)
   end
 
   def updated_on_with_milliseconds(story)
