@@ -133,8 +133,11 @@ module RbCommonHelper
     story.type.nil? ? '' : h(backlogs_types_by_id[story.type_id].name)
   end
 
-  def priority_name_or_empty(story)
-    story.priority_id.nil? ? '' : h(backlogs_priorities_by_id[story.priority_id].name)
+  def priority_name_or_empty(item)
+     @enumeration = Enumeration.find(item.priority_id)
+     puts("**********************************************")
+     puts(@enumeration)
+     item.priority_id.nil? ? '' : @enumeration.name
   end
 
   def updated_on_with_milliseconds(story)
@@ -240,12 +243,6 @@ module RbCommonHelper
         mem
       end
     end
-  end
-
-  def backlogs_priorities_by_id
-     @enumeration = Enumeration.find(priority.id)
-     puts("**********************************************")
-     puts(@enumeration)
   end
 
   def story_types
