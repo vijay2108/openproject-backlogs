@@ -189,6 +189,10 @@ module RbCommonHelper
     ret.html_safe
   end
 
+  def task_type_or_empty(story)
+    story.blank? || story.task.blank? ? '' : "#{story.task.name}"
+  end
+
   private
 
   def new_record_status
