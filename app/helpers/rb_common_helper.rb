@@ -133,6 +133,10 @@ module RbCommonHelper
     story.type.nil? ? '' : h(backlogs_types_by_id[story.type_id].name)
   end
 
+  def priority_name_or_empty(story)
+    story.priority.nil? ? '' : h(backlogs_priorities_by_id[story.priority_id].name)
+  end
+
   def updated_on_with_milliseconds(story)
     date_string_with_milliseconds(story.updated_on, 0.001) unless story.blank?
   end
@@ -233,6 +237,15 @@ module RbCommonHelper
     @backlogs_types_by_id ||= begin
       backlogs_types.inject({}) do |mem, type|
         mem[type.id] = type
+        mem
+      end
+    end
+  end
+
+  def backlogs_priorities_by_id
+    @backlogs_priorities_by_id ||= begin
+      backlogs_priorities.inject({}) do |mem, priority|
+        mem[priority.id] = priority
         mem
       end
     end
