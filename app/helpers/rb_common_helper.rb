@@ -189,8 +189,9 @@ module RbCommonHelper
     ret.html_safe
   end
 
-  def task_type_or_empty(story)
-    story.blank? || story.task.blank? ? '' : "#{story.task.name}"
+  def get_task_type(task)
+    @type = Type.where(["id = ?",  @task.type_id]).last
+    return @type.name
   end
 
   private
