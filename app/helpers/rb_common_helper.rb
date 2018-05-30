@@ -243,12 +243,9 @@ module RbCommonHelper
   end
 
   def backlogs_priorities_by_id
-    @backlogs_priorities_by_id ||= begin
-      backlogs_priorities.inject({}) do |mem, priority|
-        mem[priority.id] = priority
-        mem
-      end
-    end
+     @enumeration = Enumeration.find(priority.id)
+     puts("**********************************************")
+     puts(@enumeration)
   end
 
   def story_types
