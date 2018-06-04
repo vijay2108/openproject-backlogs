@@ -86,7 +86,7 @@ RB.Taskboard = (function ($) {
       var list, augmentList, self = this;
 
       list = this.$.find('#tasks .list');
-
+      console.log(list);
       augmentList = function () {
         $(list.splice(0, 50)).sortable({
           placeholder: 'placeholder',
@@ -107,6 +107,7 @@ RB.Taskboard = (function ($) {
 
     initializeTasks : function () {
       this.$.find('.task').each(function (index) {
+        console.log("initializeTasks: "+index);
         RB.Factory.initialize(RB.Task, this);
       });
     },
@@ -127,6 +128,7 @@ RB.Taskboard = (function ($) {
     },
 
     dragStart: function (e, ui) {
+       console.log("dragStart: "+e);
       ui.item.addClass("dragging");
     },
 
@@ -140,12 +142,12 @@ RB.Taskboard = (function ($) {
     },
 
     handleAddNewImpedimentClick: function (e) {
-      var row = $(this).parents("tr").first();
+      var row = $(this).parents("li").first();
       $('#taskboard').data('this').newImpediment(row);
     },
 
     handleAddNewTaskClick: function (e) {
-      var row = $(this).parents("tr").first();
+      var row = $(this).parents("li").first();
       $('#taskboard').data('this').newTask(row);
     },
 

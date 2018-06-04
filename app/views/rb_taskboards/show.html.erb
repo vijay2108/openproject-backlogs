@@ -56,59 +56,65 @@ See doc/COPYRIGHT.rdoc for more details.
 <% breadcrumb_paths(link_to(l(:label_backlogs), backlogs_project_backlogs_path(@project)), link_to(@sprint.name, backlogs_project_backlogs_path(@sprint))) %>
 
 <div id='rb'>
-  <div id="taskboard">
-    <table id="board_header" cellspacing="0">
-      <tr>
-        <td><%= l(:backlogs_story) %></td>
-        <% @statuses.each do |status| %>
-          <td class="swimlane"><%= status.name %></td>
-        <% end %>
-      </tr>
-    </table>
+    <div id="taskboard" class="wp-work-wrapper">
+        <div id="wp-work" class="wp-work" style="height: 330px;">
+            <div id="wp-pool-column">
+                <div id="wp-pool" style="display: block; padding-top: 36px;">
+                    <div id="wp-column-header-group" class="wp-column-header-group wp-fixed">
+                        <ul id="wp-column-headers" class="wp-column-headers">                            
+                            <% @statuses.each do |status| %>
+                              <li class="wp-column">
+                                <div class="wp-column-header-flex">
+                                    <div class="wp-column-header-flex-1">
+                                      <h2><%= status.name %></h2>
+                                      </div>
+                                  </div>
+                              </li>
+                            <% end %>
+                        </ul>                        
+                    </div>
+                       
+                    <% @sprint.stories(@project).each do |story| %>
+                    <div class="wp-swimlane wp-first <%= story_html_id_or_empty(story) %>">                   
+                            <div class="wp-swimlane-header">
+                              <div role="button" class="wp-expander js-expander">
+                                  <span class="wp-iconfont aui-icon aui-icon-small aui-iconfont-expanded"></span>
+                              </div>
+                              <div class="wp-heading story <%= mark_if_closed(story) %>" id="<%= story_html_id_or_empty(story) %>">
+                                  <span class="wp-swimlane-avatar">
+                                  <img src="https://sanchobbdo.atlassian.net/secure/viewavatar?size=xsmall&amp;avatarId=10315&amp;avatarType=issuetype">
+                                  <%= type_name_or_empty(story) %>
+                                  </span>
+                                  
+                                  <%= work_package_link_or_empty(story) %>
+                                  <span class="wp-info">
+                                      <span class="aui-lozenge"><%= story.status.name %></span>
+                                  </span>
+                                  <span class="wp-summary"> 
+                                      <%= story.subject %>
+                                  </span>
+                              </div>
+                            </div>
 
-    <table id="tasks" class="board" cellspacing="0">
-      <% @sprint.stories(@project).each do |story| %>
-        <tr class="<%= story_html_id_or_empty(story) %>">
-          <td>
-            <div class="story <%= mark_if_closed(story) %>" id="<%= story_html_id_or_empty(story) %>">
-              <div class='story-bar'>
-                <div class="status">
-                  <%= story.status.name %>
+                            <div id="tasks">     
+                              <ul class="wp-columns">
+                                  <% @statuses.each do |status| %>
+                                  <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
+                                      <%= render :partial => "rb_tasks/task",
+                                              :collection => story.tasks.select { |task| task.status.id == status.id } %>
+                                  </li>
+                                  <% end %>        
+                                </ul>
+                            </div>
+                    </div>
+                    <% end %>
                 </div>
-                <div class="id">
-                  <%= work_package_link_or_empty(story) %>
-                </div>
-              </div>
-              <div class="subject"><%= story.subject %></div>
-              <div class='story-footer'>
-                <div class="assigned_to_id">
-                  <% if story.assigned_to.present? %>
-                    <%= link_to_user(story.assigned_to) %>
-                  <% else %>
-                    <em><%= l('backlogs.unassigned') %></em>
-                  <% end %>
-                </div>
-                <div class="story-points">
-                  <%= story.story_points %>
-                </div>
-              </div>
             </div>
-          </td>
-          <% if User.current.allowed_to?(:create_tasks, @project) %>
-            <td class ="add_new clickable">+</td>
-          <% else %>
-            <td class ="add_new"></td>
-          <% end %>
-          <% @statuses.each do |status| %>
-            <td class="swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
-              <%= render :partial => "rb_tasks/task",
-                         :collection => story.tasks.select { |task| task.status.id == status.id } %>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
-    </table>
-  </div>
+        </div>
+    </div> 
+  
+  
+  
 
   <div id="helpers">
     <select class="assigned_to_id template" id="assigned_to_id_options">
