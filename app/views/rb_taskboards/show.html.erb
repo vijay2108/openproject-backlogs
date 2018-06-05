@@ -76,36 +76,36 @@ See doc/COPYRIGHT.rdoc for more details.
                        
                     <% @sprint.stories(@project).each do |story| %>
                     <div class="wp-swimlane wp-first <%= story_html_id_or_empty(story) %>">                   
-                            <div class="wp-swimlane-header">
-                              <div role="button" class="wp-expander js-expander">
-                                  <span class="wp-iconfont aui-icon aui-icon-small aui-iconfont-expanded"></span>
-                              </div>
-                              <div class="wp-heading story <%= mark_if_closed(story) %>" id="<%= story_html_id_or_empty(story) %>">
-                                  <span class="wp-swimlane-avatar">
-                                  <img src="https://sanchobbdo.atlassian.net/secure/viewavatar?size=xsmall&amp;avatarId=10315&amp;avatarType=issuetype">
-                                  <%= type_name_or_empty(story) %>
-                                  </span>
-                                  
-                                  <%= work_package_link_or_empty(story) %>
-                                  <span class="wp-info">
-                                      <span class="aui-lozenge"><%= story.status.name %></span>
-                                  </span>
-                                  <span class="wp-summary"> 
-                                      <%= story.subject %>
-                                  </span>
-                              </div>
-                            </div>
+                        <div class="wp-swimlane-header <%= isKanbanboard(@project) ? 'story-hide' : '' %>">
+                          <div role="button" class="wp-expander js-expander">
+                              <span class="wp-iconfont aui-icon aui-icon-small aui-iconfont-expanded"></span>
+                          </div>
+                          <div class="wp-heading story <%= mark_if_closed(story) %>" id="<%= story_html_id_or_empty(story) %>">
+                              <span class="wp-swimlane-avatar">
+                              <img src="https://sanchobbdo.atlassian.net/secure/viewavatar?size=xsmall&amp;avatarId=10315&amp;avatarType=issuetype">
+                              <%= type_name_or_empty(story) %>
+                              </span>
+                              
+                              <%= work_package_link_or_empty(story) %>
+                              <span class="wp-info">
+                                  <span class="aui-lozenge"><%= story.status.name %></span>
+                              </span>
+                              <span class="wp-summary"> 
+                                  <%= story.subject %>
+                              </span>
+                          </div>
+                        </div>
 
-                            <div id="tasks">     
-                              <ul class="wp-columns">
-                                  <% @statuses.each do |status| %>
-                                  <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
-                                      <%= render :partial => "rb_tasks/task",
-                                              :collection => story.tasks.select { |task| task.status.id == status.id } %>
-                                  </li>
-                                  <% end %>        
-                                </ul>
-                            </div>
+                        <div id="tasks">     
+                          <ul class="wp-columns">
+                              <% @statuses.each do |status| %>
+                              <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
+                                  <%= render :partial => "rb_tasks/task",
+                                          :collection => story.tasks.select { |task| task.status.id == status.id } %>
+                              </li>
+                              <% end %>        
+                            </ul>
+                        </div>
                     </div>
                     <% end %>
                 </div>

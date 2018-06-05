@@ -269,4 +269,15 @@ module RbCommonHelper
       s.type = available_story_types.first
     end
   end
+
+  def isKanbanboard(project)
+    @version = Version.where(["project_id = ? and status = ?",  project.id, "open"]).last
+    if @version
+      if @version.name == 'Kanban Board'
+        return true
+      else 
+        return false
+      end
+    end
+  end
 end
