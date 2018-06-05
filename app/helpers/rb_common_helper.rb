@@ -284,7 +284,7 @@ module RbCommonHelper
   def task_type_icon(task)
     if task.type_id == 1
       return "type_icons/story.png"
-    elsif story.type_id == 6
+    elsif task.type_id == 6
       return "type_icons/story.png"
     end
   end
@@ -292,7 +292,7 @@ module RbCommonHelper
   def task_priority_icon(task)
     if task.priority_id == 1
       return "priority_icons/major.png"
-    elsif story.type_id == 6
+    elsif task.type_id == 6
       return "priority_icons/minor.png"
     end
   end
