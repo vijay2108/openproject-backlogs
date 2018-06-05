@@ -286,6 +286,8 @@ module RbCommonHelper
       return "type_icons/story.png"
     elsif task.type_id == 6
       return "type_icons/story.png"
+    else
+      return "type_icons/story.png"
     end
   end
 
@@ -293,6 +295,8 @@ module RbCommonHelper
     if task.priority_id == 1
       return "priority_icons/major.png"
     elsif task.type_id == 6
+      return "priority_icons/minor.png"
+    else
       return "priority_icons/minor.png"
     end
   end
