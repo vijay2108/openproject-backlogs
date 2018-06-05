@@ -41,8 +41,8 @@ See doc/COPYRIGHT.rdoc for more details.
   
   
   
-  <div class="task_type"><img src="https://sanchobbdo.atlassian.net/secure/viewavatar?size=xsmall&amp;avatarId=10316&amp;avatarType=issuetype"><%= type_name_or_empty(task) %></div>
-  <div class="task_priority"><img src="https://sanchobbdo.atlassian.net/images/icons/priorities/major.svg"><%= priority_name_or_empty(task) %></div>
+  <div class="task_type"><%= image_tag task_type_icon(task), class: "" %><%= type_name_or_empty(task) %></div>
+  <div class="task_priority"><%= image_tag task_priority_icon(task), class: "" %><%= priority_name_or_empty(task) %></div>
   <div class="remaining_hours editable<%= ' empty' if remaining_hours(task).blank? %>" fieldname="remaining_hours"><%= remaining_hours(task) %></div>
   <div class="id">
     <div class="t"><%= work_package_link_or_empty(task) %></div>

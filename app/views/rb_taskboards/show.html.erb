@@ -82,7 +82,7 @@ See doc/COPYRIGHT.rdoc for more details.
                           </div>
                           <div class="wp-heading story <%= mark_if_closed(story) %>" id="<%= story_html_id_or_empty(story) %>">
                               <span class="wp-swimlane-avatar">
-                              <img src="https://sanchobbdo.atlassian.net/secure/viewavatar?size=xsmall&amp;avatarId=10315&amp;avatarType=issuetype">
+                              <%= image_tag task_type_icon(story), class: "" %>
                               <%= type_name_or_empty(story) %>
                               </span>
                               
