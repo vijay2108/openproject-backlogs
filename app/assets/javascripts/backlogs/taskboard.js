@@ -86,7 +86,6 @@ RB.Taskboard = (function ($) {
       var list, augmentList, self = this;
 
       list = this.$.find('#tasks .list');
-      console.log(list);
       augmentList = function () {
         $(list.splice(0, 50)).sortable({
           placeholder: 'placeholder',
@@ -107,7 +106,6 @@ RB.Taskboard = (function ($) {
 
     initializeTasks : function () {
       this.$.find('.task').each(function (index) {
-        console.log("initializeTasks: "+index);
         RB.Factory.initialize(RB.Task, this);
       });
     },
@@ -128,7 +126,6 @@ RB.Taskboard = (function ($) {
     },
 
     dragStart: function (e, ui) {
-       console.log("dragStart: "+e);
       ui.item.addClass("dragging");
     },
 
