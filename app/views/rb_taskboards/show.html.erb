@@ -74,6 +74,7 @@ See doc/COPYRIGHT.rdoc for more details.
                         </ul>                        
                     </div>
                        
+                    <% if @sprint.stories(@project)? %>
                     <% @sprint.stories(@project).each do |story| %>
                     <div class="wp-swimlane wp-first <%= story_html_id_or_empty(story) %>">                   
                         <div class="wp-swimlane-header <%= isKanbanboard(@project) ? 'story-hide' : '' %>">                          
@@ -103,6 +104,15 @@ See doc/COPYRIGHT.rdoc for more details.
                             </ul>
                         </div>
                     </div>
+                    <% end %>
+                    <% else %>
+                         <div class="no-data">
+                            <div class="no-data-content">
+                              <span class="no-data-img"></span>
+                              <span class="no-data-title">There are no active sprints</span>
+                              <p>Start sprints in the <a href="#">Backlog</a></p>
+                            </div>
+                        </div>
                     <% end %>
                 </div>
             </div>
