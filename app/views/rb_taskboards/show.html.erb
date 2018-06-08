@@ -74,43 +74,42 @@ See doc/COPYRIGHT.rdoc for more details.
                         </ul>                        
                     </div>
                        
-                    <% if @sprint.stories(@project)? %>
-                    <% @sprint.stories(@project).each do |story| %>
-                    <div class="wp-swimlane wp-first <%= story_html_id_or_empty(story) %>">                   
-                        <div class="wp-swimlane-header <%= isKanbanboard(@project) ? 'story-hide' : '' %>">                          
-                          <div class="wp-heading story <%= mark_if_closed(story) %>" id="<%= story_html_id_or_empty(story) %>">
-                              <span class="wp-swimlane-avatar">
-                              <%= image_tag task_type_icon(story), class: "" %>
-                              </span>
-                              
-                              <%= work_package_link_or_empty(story) %>
-                              <span class="wp-info">
-                                  <span class="aui-lozenge"><%= story.status.name %></span>
-                              </span>
-                              <span class="wp-summary"> 
-                                  <%= story.subject %>
-                              </span>
+                    <% if @sprint.stories(@project).any? %>
+                      <% @sprint.stories(@project).each do |story| %>
+                      <div class="wp-swimlane wp-first <%= story_html_id_or_empty(story) %>">                   
+                          <div class="wp-swimlane-header <%= isKanbanboard(@project) ? 'story-hide' : '' %>">                          
+                            <div class="wp-heading story <%= mark_if_closed(story) %>" id="<%= story_html_id_or_empty(story) %>">
+                                <span class="wp-swimlane-avatar">
+                                <%= image_tag task_type_icon(story), class: "" %>
+                                </span>
+                                
+                                <%= work_package_link_or_empty(story) %>
+                                <span class="wp-info">
+                                    <span class="aui-lozenge"><%= story.status.name %></span>
+                                </span>
+                                <span class="wp-summary"> 
+                                    <%= story.subject %>
+                                </span>
+                            </div>
                           </div>
-                        </div>
 
-                        <div id="tasks">     
-                          <ul class="wp-columns">
-                              <% @statuses.each do |status| %>
-                              <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
-                                  <%= render :partial => "rb_tasks/task",
-                                          :collection => story.tasks.select { |task| task.status.id == status.id } %>
-                              </li>
-                              <% end %>        
-                            </ul>
-                        </div>
-                    </div>
-                    <% end %>
+                          <div id="tasks">     
+                            <ul class="wp-columns">
+                                <% @statuses.each do |status| %>
+                                <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
+                                    <%= render :partial => "rb_tasks/task",
+                                            :collection => story.tasks.select { |task| task.status.id == status.id } %>
+                                </li>
+                                <% end %>        
+                              </ul>
+                          </div>
+                      </div>
+                      <% end %>
                     <% else %>
                          <div class="no-data">
                             <div class="no-data-content">
                               <span class="no-data-img"></span>
-                              <span class="no-data-title">There are no active sprints</span>
-                              <p>Start sprints in the <a href="#">Backlog</a></p>
+                              <span class="no-data-title">There are no tasks for this board</span>
                             </div>
                         </div>
                     <% end %>
