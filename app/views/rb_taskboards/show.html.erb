@@ -103,6 +103,14 @@ See doc/COPYRIGHT.rdoc for more details.
                                 <% end %>        
                               </ul>
                           </div>
+                          <% if isKanbanboard(@project) == true && story.tasks.any? == false %>
+                          <div class="no-data">
+                            <div class="no-data-content">
+                              <span class="no-data-img"></span>
+                              <span class="no-data-title">There are no tasks for this board</span>
+                            </div>
+                          </div>
+                          <% end %>
                       </div>
                       <% end %>
                     <% else %>
