@@ -32,11 +32,11 @@
     min-width: 950px
   #owner_backlogs_container
     float: right
-    width: 49.5%
+    width: 100%
     min-width: 470px
   #sprint_backlogs_container
     float: left
-    width: 49.5%
+    width: 100%
     min-width: 470px
     min-height: 230px
   #owner_backlogs_container .backlog .header > .add_new_story
@@ -228,7 +228,7 @@
         margin-left: 1em
         margin-right: 1em
         padding: 5px 2px 4px 2px
-        width: 4em
+        width: auto
         text-align: right
         white-space: nowrap
       .type_id .t
@@ -278,6 +278,7 @@
   .sprint.editing
     .editors, > .editor
       display: block
+      color: #404040
     label, > *
       display: none
     +
@@ -332,6 +333,10 @@
 
 .backlog
   font-size: 0.9rem
+.assigni-name
+  float: right
+  padding: 5px 2px 4px 2px
+  margin-left: 1em
 
 /* Hide the button text in the ui-dialog */
 .ui-dialog-titlebar-close
