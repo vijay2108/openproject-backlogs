@@ -39,7 +39,24 @@ See doc/COPYRIGHT.rdoc for more details.
   <%= stylesheet_link_tag 'backlogs/taskboard.css' %>
 <% end %>
 <% html_title @sprint.name %>
-<%= toolbar title: @sprint.name do %>
+
+
+<%= toolbar title: @sprint.name do %> 
+  <% if @sprint.has_burndown? %>  
+  <li class="toolbar-item">
+    <div class="tooltips">
+    <a><i class="button--icon icon-time" aria-hidden="true"></i>
+    <%= distance_of_time_in_words(@sprint.effective_date, DateTime.now) %> remaining 
+      <ul>
+        <li>Start Date:</li>
+        <li class="space"><%= @sprint.start_date %></li>
+        <li>Projected End Date:</li>
+        <li><%= @sprint.effective_date %></li>
+      </ul> 
+    </a> 
+    </div>
+    </li>
+  <% end %>
   <li class="toolbar-item toolbar-input-group" id="col_width">
     <div>
       <label for="col_width_input"><%= l('backlogs.column_width') %></label>
