@@ -46,7 +46,11 @@ See doc/COPYRIGHT.rdoc for more details.
   <li class="toolbar-item">
     <div class="tooltips">
     <a><i class="button--icon icon-time" aria-hidden="true"></i>
-    <%= distance_of_time_in_words(@sprint.effective_date, DateTime.now) %> remaining 
+    <% if (DateTime.now <= @sprint.effective_date) %>
+      <%= distance_of_time_in_words(@sprint.effective_date, DateTime.now) %> remaining 
+    <% else %>
+       completed <%= distance_of_time_in_words(@sprint.effective_date, DateTime.now) %> ago
+    <% end %>
       <ul>
         <li>Start Date:</li>
         <li class="space"><%= @sprint.start_date %></li>
