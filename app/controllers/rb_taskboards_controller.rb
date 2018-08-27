@@ -39,6 +39,7 @@ class RbTaskboardsController < RbApplicationController
   helper :taskboards
 
   def show
+    puts "LATEST CODE UPDATED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
     @currentworkflow = ProjectWorkflow.find_by(project_id: @project.id)
     if @currentworkflow
       @selectedworkflow = @currentworkflow.wi_id
