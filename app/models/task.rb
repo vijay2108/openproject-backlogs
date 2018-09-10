@@ -64,6 +64,12 @@ class Task < WorkPackage
     end
   end
 
+  def self.kanban_tasks_for(story_id)
+    Task.where(root_id: story_id).where('id != ?', story_id).order(:lft).each_with_index do |task, i|
+      task.rank = i + 1
+    end
+  end
+
   def status_id=(id)
     super
     self.remaining_hours = 0 if Status.find(id).is_closed?

@@ -93,6 +93,10 @@ class Story < WorkPackage
     Task.tasks_for(id)
   end
 
+  def kanban_tasks
+    Task.kanban_tasks_for(id)
+  end
+
   def tasks_and_subtasks
     return [] unless Task.type
     descendants.where(type_id: Task.type)

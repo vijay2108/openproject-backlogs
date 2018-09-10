@@ -117,10 +117,17 @@ See doc/COPYRIGHT.rdoc for more details.
                           <div id="tasks">     
                             <ul class="wp-columns">
                                 <% @statuses.each do |status| %>
-                                <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
-                                    <%= render :partial => "rb_tasks/task",
-                                            :collection => story.tasks.select { |task| task.status.id == status.id } %>
-                                </li>
+                                <% if isKanbanboard(@project) == false %>
+                                  <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
+                                      <%= render :partial => "rb_tasks/task",
+                                              :collection => story.tasks.select { |task| task.status.id == status.id } %>
+                                  </li>
+                                <% else %>
+                                  <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
+                                      <%= render :partial => "rb_tasks/task",
+                                              :collection => story.kanban_tasks.select { |task| task.status.id == status.id } %>
+                                  </li>
+                                <% end %>
                                 <% end %>        
                               </ul>
                           </div>
