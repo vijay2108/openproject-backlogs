@@ -39,7 +39,7 @@ module RbCommonHelper
   end
 
   def assignee_name_or_empty(story)
-    story.blank? || story.assigned_to.blank? ? '' : "#{story.assigned_to.firstname} #{story.assigned_to.lastname}"
+    story.blank? || story.assigned_to.blank? ? '' : "#{story.assigned_to.firstname}"
   end
 
   def blocks_ids(ids)
@@ -167,6 +167,11 @@ module RbCommonHelper
 
   def type_name_or_empty(story)
     story.type.nil? ? '' : h(backlogs_types_by_id[story.type_id].name)
+  end
+
+  def priority_name_or_empty(item)
+     @enumeration = Enumeration.find(item.priority_id)
+     item.priority_id.nil? ? '' : @enumeration.name
   end
 
   def updated_on_with_milliseconds(story)
@@ -298,6 +303,55 @@ module RbCommonHelper
   def template_story
     Story.new.tap do |s|
       s.type = available_story_types.first
+    end
+  end
+
+  def isKanbanboard(project)
+    @version = Version.where(["project_id = ? and status = ?",  project.id, "open"]).last
+    if @version
+      if @version.name == 'Kanban Board'
+        return true
+      else 
+        return false
+      end
+    end
+  end
+
+  def task_type_icon(task)
+    if task.type_id == 1
+      return "type_icons/task.png"
+    elsif task.type_id == 2
+      return "type_icons/milestone.png"
+    elsif task.type_id == 3
+      return "type_icons/phase.png"
+    elsif task.type_id == 4
+      return "type_icons/feature.png"
+    elsif task.type_id == 5
+      return "type_icons/epic.png"
+    elsif task.type_id == 6
+      return "type_icons/user-story.png"
+    elsif task.type_id == 7
+      return "type_icons/bug.png"
+    elsif task.type_id == 8
+      return "type_icons/task.png"
+    elsif task.type_id == 9
+      return "type_icons/wishlist.png"
+    else
+      return "type_icons/task.png"
+    end
+  end
+
+  def task_priority_icon(task)
+    if task.priority_id == 7
+      return "priority_icons/minor.png"
+    elsif task.priority_id == 8
+      return "priority_icons/trivial.png"
+    elsif task.priority_id == 9
+      return "priority_icons/major.png"
+    elsif task.priority_id == 10
+      return "priority_icons/critical.png"
+    else
+      return "priority_icons/trivial.png"
     end
   end
 end

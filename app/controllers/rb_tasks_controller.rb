@@ -38,8 +38,8 @@ class RbTasksController < RbApplicationController
   # This is a constant here because we will recruit it elsewhere to whitelist
   # attributes. This is necessary for now as we still directly use `attributes=`
   # in non-controller code.
-  PERMITTED_PARAMS = ["id", "subject", "assigned_to_id", "remaining_hours", "parent_id",
-                      "estimated_hours", "status_id", "sprint_id"]
+  PERMITTED_PARAMS = ["id", "type_id", "priority_id", "subject", "assigned_to_id", "remaining_hours", "parent_id",
+                      "estimated_hours", "status_id", "prev", "sprint_id"]
 
   def create
     call = Tasks::CreateService

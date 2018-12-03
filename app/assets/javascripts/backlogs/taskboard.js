@@ -88,7 +88,6 @@ RB.Taskboard = (function ($) {
       var list, augmentList, self = this;
 
       list = this.$.find('#tasks .list');
-
       augmentList = function () {
         $(list.splice(0, 50)).sortable({
           placeholder: 'placeholder',
@@ -149,12 +148,12 @@ RB.Taskboard = (function ($) {
     },
 
     handleAddNewImpedimentClick: function (e) {
-      var row = $(this).parents("tr").first();
+      var row = $(this).parents("li").first();
       $('#taskboard').data('this').newImpediment(row);
     },
 
     handleAddNewTaskClick: function (e) {
-      var row = $(this).parents("tr").first();
+      var row = $(this).parents("li").first();
       $('#taskboard').data('this').newTask(row);
     },
 

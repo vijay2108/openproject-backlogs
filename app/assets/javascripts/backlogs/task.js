@@ -72,7 +72,7 @@ RB.Task = (function ($) {
     },
 
     markIfClosed: function () {
-      if (this.$.parent('td').first().hasClass('closed')) {
+      if (this.$.parent('li').first().hasClass('closed')) {
         this.$.addClass('closed');
       } else {
         this.$.removeClass('closed');
@@ -83,7 +83,7 @@ RB.Task = (function ($) {
       var prev, cellId, data, url;
 
       prev = this.$.prev();
-      cellId = this.$.parent('td').first().attr('id').split("_");
+      cellId = this.$.parent('li').first().attr('id').split("_");
 
       data = this.$.find('.editor').serialize() +
                  "&parent_id=" + cellId[0] +
@@ -106,7 +106,7 @@ RB.Task = (function ($) {
     },
 
     beforeSaveDragResult: function () {
-      if (this.$.parent('td').first().hasClass('closed')) {
+      if (this.$.parent('li').first().hasClass('closed')) {
         // This is only for the purpose of making the Remaining Hours reset
         // instantaneously after dragging to a closed status. The server should
         // still make sure to reset the value.

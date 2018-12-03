@@ -29,7 +29,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-#
 # See doc/COPYRIGHT.rdoc for more details.
 #++
 
@@ -40,7 +39,7 @@ class Backlog
   def self.owner_backlogs(project, options = {})
     options.reverse_merge!(limit: nil)
 
-    backlogs = Sprint.apply_to(project).with_status_open.displayed_right(project).order_by_name
+    backlogs = Sprint.apply_to(project).displayed_right(project).order_by_name
 
     stories_by_sprints = Story.backlogs(project.id, backlogs.map(&:id))
 
@@ -48,7 +47,7 @@ class Backlog
   end
 
   def self.sprint_backlogs(project)
-    sprints = Sprint.apply_to(project).with_status_open.displayed_left(project).order_by_date
+    sprints = Sprint.apply_to(project).displayed_left(project).order_by_date
 
     stories_by_sprints = Story.backlogs(project.id, sprints.map(&:id))
 
