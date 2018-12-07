@@ -35,6 +35,13 @@
 
 if (window.RB === null || window.RB === undefined) {
   window.RB = (function ($) {
+   
+    //Replace document with any closest container that is available on load.
+    $(document).on('click', '.wp-expander', function () { 
+        $(this).closest('.wp-swimlane').toggleClass('wp-closed');
+        // As I see the input is direct child of the div
+    });
+
     var object, Factory, Dialog, UserPreferences,
         ajax;
 
