@@ -126,11 +126,15 @@ See doc/COPYRIGHT.rdoc for more details.
                         <% end %>
 
                     <%#-- KANBAN BOARD ++#%>
+
+                      <%= "OUTSIDE KANBAN BOARDDDDDDDDDDDDDD" %>
                        <% if isKanbanboard(@project) == true %>
+                            <%= "INSIDE KANBAN BOARDDDDDDDDDDDDDD" %> 
                             <div class="wp-swimlane wp-first">
                               <div id="tasks">     
                                   <ul class="wp-columns">
                                       <% @statuses.each do |status| %>
+                                        <%= "INSIDE STATUSES" %> 
                                         <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="_<%= status.id %>">
                                           <% @sprint.stories(@project).each do |story| %>
                                           <%= story.id %>
