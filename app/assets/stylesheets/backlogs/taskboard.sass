@@ -178,13 +178,14 @@
       font-size: 12px !important
       line-height: 16px
       padding: 3px 5px 2px 5px !important
-      font-weight: 600
+      font-weight: 400
       color: #404040
       border-radius: 2em
       min-width: 12px
       height: auto !important
       position: initial !important
       display: inline-block
+      float: right
     .blocks, .remaining_hours.editable.empty
       display: none
     .indicator
@@ -329,16 +330,17 @@
 .work_package
   .id
     @include story-header
-    text-align: right
+    //text-align: right
     width: 75px
-    float: right
-    margin-left: 10px
+    float: left
+    //margin-left: 10px
     a
       opacity: 1.0
       filter: alpha(opacity = 100)
       color: #41a3f3
       font-size: 14px
-      font-weight: 600
+      font-weight: 400
+      text-decoration: underline
   .editable:hover
     background-color: transparent
   .subject.editable
@@ -349,12 +351,15 @@
     line-height: 1.42857143 !important
     max-height: 4.28571429em !important
     overflow: hidden !important
-    margin-bottom: 20px !important
+    margin-bottom: 5px !important
     width: auto !important
     height: auto !important
     padding: 0 !important
+    clear: both
 .task_type, .task_priority
     display: inline-block
+    float: right
+    margin-left: 5px
 .story
   .story-footer
     .assigned_to_id
@@ -367,12 +372,13 @@
   .assigned_to_id.editable
     width: auto !important
     display: inline-block
-    float: right !important
+    float: left !important
     margin-top: 0 !important
     padding: 0 !important
-    font-size: 12px !important
+    font-size: 13px !important
     .t
       @include ellipsis
+      font-weight: 600
 
 /* Toolbar modifications (no support for labels form the component) */
 
