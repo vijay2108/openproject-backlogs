@@ -88,8 +88,7 @@ See doc/COPYRIGHT.rdoc for more details.
                         </ul>                        
                     </div>
 
-                    <%#-- SCRUM BOARD ++#%>   
-                    <% if @sprint.stories(@project).any? %>
+                    <%#-- SCRUM BOARD ++#%>
                         <% if isKanbanboard(@project) == false %>
                           <% @sprint.stories(@project).each do |story| %>
                             <div class="wp-swimlane wp-first <%= story_html_id_or_empty(story) %>"> 
@@ -125,17 +124,8 @@ See doc/COPYRIGHT.rdoc for more details.
                             </div>
                           <% end %>
                         <% end %>
-                    <% else %>
-                         <div class="no-data">
-                            <div class="no-data-content">
-                              <span class="no-data-img"></span>
-                              <span class="no-data-title">There are no tasks for this scrum board</span>
-                            </div>
-                        </div>
-                    <% end %>
 
                     <%#-- KANBAN BOARD ++#%>
-                    <% if @sprint.stories(@project).any? %>
                        <% if isKanbanboard(@project) == true %>
                             <div class="wp-swimlane wp-first">
                               <div id="tasks">     
@@ -174,14 +164,6 @@ See doc/COPYRIGHT.rdoc for more details.
                               </div>
                             </div>
                       <% end %>
-                    <% else %>
-                         <div class="no-data">
-                            <div class="no-data-content">
-                              <span class="no-data-img"></span>
-                              <span class="no-data-title">There are no tasks for this kanban board</span>
-                            </div>
-                        </div>
-                    <% end %>
 
                 </div>
             </div>
