@@ -61,6 +61,11 @@
   white-space: inherit
 
 #rb
+  .work_package::after,
+  .work_package::before
+      content: ""
+      clear: both
+      display: table
   #assigned_to_id_options
     display: none
   .swimlane
@@ -139,6 +144,7 @@
       width: 180px
     &.closed .subject
       text-decoration: line-through
+  
   .work_package, .placeholder
     border: none
     cursor: move
