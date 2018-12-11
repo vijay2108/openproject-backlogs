@@ -54,8 +54,6 @@ class Story < WorkPackage
       story.rank = last_rank + 1
       stories_by_version[story.fixed_version_id] << story
     end
-    puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@####################"
-    puts stories_by_version
     stories_by_version
   end
 
