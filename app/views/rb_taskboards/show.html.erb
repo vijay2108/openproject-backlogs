@@ -98,34 +98,36 @@ See doc/COPYRIGHT.rdoc for more details.
                     <% if isKanbanboard(@project) == false %>
                       <% if @sprint.stories(@project).any? %>
                         <% @sprint.stories(@project).each do |story| %>
-                          <div class="wp-swimlane wp-first <%= story_html_id_or_empty(story) %>"> 
-                            <div class="wp-swimlane-header">
-                              <div role="button" tabindex="0" class="wp-expander">
-                                <span class="wp-iconfont wp-iconfont-expanded"></span>
-                              </div>                          
-                                <div class="wp-heading story <%= mark_if_closed(story) %>" id="<%= story_html_id_or_empty(story) %>">
-                                    
-                                    <%= work_package_link_or_empty(story) %>
-                                    <span class="wp-summary"> 
-                                      <strong><%= story.subject %></strong>
-                                    </span>
-                                     <span class="wp-info subtask-count">
-                                        <span class="aui-lozenge"><%= story.tasks.count %> issues</span>
-                                    </span>
+                          <% if story.type_id == 6 %>
+                            <div class="wp-swimlane wp-first <%= story_html_id_or_empty(story) %>"> 
+                              <div class="wp-swimlane-header">
+                                <div role="button" tabindex="0" class="wp-expander">
+                                  <span class="wp-iconfont wp-iconfont-expanded"></span>
+                                </div>                          
+                                  <div class="wp-heading story <%= mark_if_closed(story) %>" id="<%= story_html_id_or_empty(story) %>">
+                                      
+                                      <%= work_package_link_or_empty(story) %>
+                                      <span class="wp-summary"> 
+                                        <strong><%= story.subject %></strong>
+                                      </span>
+                                      <span class="wp-info subtask-count">
+                                          <span class="aui-lozenge"><%= story.tasks.count %> issues</span>
+                                      </span>
+                                  </div>
                                 </div>
-                              </div>
 
-                              <div id="tasks">     
-                                <ul class="wp-columns">
-                                    <% @statuses.each do |status| %>
-                                      <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
-                                          <%= render :partial => "rb_tasks/task",
-                                                  :collection => story.tasks.select { |task| task.status.id == status.id } %>
-                                      </li>
-                                    <% end %>
-                                  </ul>
-                              </div>
-                          </div>
+                                <div id="tasks">     
+                                  <ul class="wp-columns">
+                                      <% @statuses.each do |status| %>
+                                        <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
+                                            <%= render :partial => "rb_tasks/task",
+                                                    :collection => story.tasks.select { |task| task.status.id == status.id } %>
+                                        </li>
+                                      <% end %>
+                                    </ul>
+                                </div>
+                            </div>
+                          <% end %>
                         <% end %>
                       <% else %>
                           <div class="no-data">
