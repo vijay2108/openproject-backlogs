@@ -166,6 +166,7 @@ en:
   label_version: 'Version'
   label_webcal: "Webcal Feed"
   label_wiki: "Wiki"
+  label_remaining: "remaining"
 
   permission_view_master_backlog: "View master backlog"
   permission_view_taskboards: "View taskboards"
@@ -182,7 +183,7 @@ en:
   rb_label_copy_tasks: "Copy work packages"
   rb_label_copy_tasks_all: "All"
   rb_label_copy_tasks_none: "None"
-  rb_label_copy_tasks_open: "Open"
+  rb_label_copy_tasks_open: "Open"Wiki
   rb_label_link_to_original: "Include link to original story"
 
   remaining_hours: "remaining hours"
