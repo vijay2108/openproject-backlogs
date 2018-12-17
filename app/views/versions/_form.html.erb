@@ -50,12 +50,6 @@ See doc/COPYRIGHT.rdoc for more details.
                  container_class: '-slim'  %>
   </div>
   <div class="form--field">
-    <%= f.text_field :wiki_page_title,
-                     label: :label_wiki_page,
-                     disabled: @project.wiki.nil?,
-                     container_class: '-wide'  %>
-  </div>
-  <div class="form--field">
     <%= f.text_field :start_date, container_class: '-xslim', class: '-augmented-datepicker' %>
   </div>
   <div class="form--field">
