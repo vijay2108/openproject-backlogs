@@ -52,7 +52,7 @@ See doc/COPYRIGHT.rdoc for more details.
       <div class="tooltips">
       <a><i class="button--icon icon-time" aria-hidden="true"></i>
       <% if (DateTime.now <= @sprint.effective_date) %>
-        <%= distance_of_time_in_words(@sprint.effective_date, DateTime.now) %> remaining 
+        <%= distance_of_time_in_words(@sprint.effective_date, DateTime.now) %> l(:label_remaining) 
       <% else %>
         completed <%= distance_of_time_in_words(@sprint.effective_date, DateTime.now) %> ago
       <% end %>
