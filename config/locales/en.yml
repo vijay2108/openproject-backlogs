@@ -166,7 +166,6 @@ en:
   label_version: 'Version'
   label_webcal: "Webcal Feed"
   label_wiki: "Wiki"
-  label_remaining: "remaining"
 
   permission_view_master_backlog: "View master backlog"
   permission_view_taskboards: "View taskboards"
