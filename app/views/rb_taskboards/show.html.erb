@@ -38,13 +38,33 @@ See doc/COPYRIGHT.rdoc for more details.
   <%= render :partial => 'shared/backlogs_header' %>
   <%= stylesheet_link_tag 'backlogs/taskboard.css' %>
 <% end %>
-<% html_title @sprint.name %>
-<div class="main-title">
-  <h1>
-    <%= @sprint.name %>
-  </h1>
-  <p><%= @sprint.description %></p>
-</div>
+
+<% if @sprint.name == 'Kanban Board' %>
+  <% html_title l(:label_kanban_board) %>
+  <div class="main-title">
+    <h1>
+      <%= l(:label_kanban_board) %>
+    </h1>
+    <p><%= @sprint.description %></p>
+  </div>
+<% elsif @sprint.name == l(:label_backlogs) %>
+  <% html_title l(:label_backlogs) %>
+  <div class="main-title">
+    <h1>
+      <%= l(:label_backlogs) %>
+    </h1>
+    <p><%= @sprint.description %></p>
+  </div>
+<% else %>
+  <% html_title @sprint.name %>
+  <div class="main-title">
+    <h1>
+      <%= @sprint.name %>
+    </h1>
+    <p><%= @sprint.description %></p>
+  </div>
+<% end %>
+
 <div class="page-toolbar">
   <%= toolbar title: @project.name do %> 
     <% if @sprint.has_burndown? %>  
