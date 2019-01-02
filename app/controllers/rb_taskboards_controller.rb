@@ -39,14 +39,16 @@ class RbTaskboardsController < RbApplicationController
   helper :taskboards
 
   def show
-    #@currentworkflow = ProjectWorkflow.find_by(project_id: @project.id)
-    #if @currentworkflow
-    #  @selectedworkflow = @currentworkflow.wi_id
-    #else
-    #  @selectedworkflow = 0
-    #end
-    #@workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
-    @workflows = Workflow.where(type_id: Task.type)
+    @currentworkflow = ProjectWorkflow.find_by(project_id: @project.id)
+    if @currentworkflow
+      @selectedworkflow = @currentworkflow.wi_id
+    else
+      @selectedworkflow = 0
+    end
+    @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
+    if @workflows.empty?
+      @workflows = Workflow.where(type_id: Task.type, wi_id: 0)
+    end
     @statuses = []
     @temparray = []
     @workflows.each do |workflow|
