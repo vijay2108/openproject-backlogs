@@ -106,7 +106,7 @@ module OpenProject::Backlogs
            before: :calendar,
            param: :project_id,
            if: -> (project) { VersionsController.activesprint?(project) },
-           icon: 'icon2 icon-backlogs'
+           icon: 'dashboard-menu-icon icon-backlogs-na'
     end
 
     assets %w(
