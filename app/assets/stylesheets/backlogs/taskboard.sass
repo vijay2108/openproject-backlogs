@@ -69,6 +69,8 @@
     padding: 5px 0 0 5px
     width: 105px
     /* Must be the same as min-width */
+    //border-radius: 0 0 10px 10px
+    //border-top: 0
   #board_header
     background-color: #EBEBEB
     border: 1px solid #CCCCCC
@@ -140,22 +142,21 @@
     &.closed .subject
       text-decoration: line-through
   .work_package, .placeholder
-    border: none
+    //border: none
     cursor: move
-    display: block
-    margin: 5px
+    display: block    
     background: #fff !important
-    float: none !important
-    width: auto !important
-    height: auto !important
-    border: 0 !important
-    border-radius: 2px !important
-    box-shadow: 0px 1px 2px 0px rgba(9, 30, 66, 0.25) !important
+    // float: none !important
+    // width: auto !important
+    // height: auto !important
+    border: 1px solid #DBDBDB
+    border-radius: 10px !important
+    box-shadow: none !important
     color: #333 !important
-    cursor: move !important
+    //cursor: move !important
     font-size: 14px !important
     margin-top: 5px !important
-    margin-bottom: 5px !important
+    margin-bottom: 10px !important
     padding: 10px !important
     position: relative !important
     transition: background-color 140ms ease-in-out, border-color 75ms ease-in-out !important
@@ -329,18 +330,26 @@
 .work_package
   .id
     @include story-header
-    text-align: right
-    width: 75px
-    float: right
-    margin-left: 10px
+    text-align: left
+    font-weight: 600
+    //width: 75px
+    //float: right
+    //margin-left: 10px
     a
       opacity: 1.0
       filter: alpha(opacity = 100)
-      color: #41a3f3
-      font-size: 14px
+      color: #41A3F3
+      font-size: 11px
       font-weight: 600
+    div
+      color: #41A3F3 !important
   .editable:hover
     background-color: transparent
+  .subject
+    font-size: 11px !important
+    color: #41A3F3 !important
+    font-weight: 600 !important
+
   .subject.editable
     font-size: 1rem - rem-calc(3px)
     margin-top: 0        
@@ -349,10 +358,19 @@
     line-height: 1.42857143 !important
     max-height: 4.28571429em !important
     overflow: hidden !important
-    margin-bottom: 20px !important
+    margin-bottom: 15px !important
     width: auto !important
     height: auto !important
     padding: 0 !important
+  .date
+    font-size: 10px
+    line-height: 12px
+    font-weight: 600
+    margin-bottom: 5px
+    div
+      color: #C7C7C7 !important
+    span
+      color: #868686
 .task_type, .task_priority
     display: inline-block
 .story
@@ -366,11 +384,13 @@
 .work_package
   .assigned_to_id.editable
     width: auto !important
-    display: inline-block
-    float: right !important
+    display: block
+    //float: right !important
     margin-top: 0 !important
     padding: 0 !important
-    font-size: 12px !important
+    font-size: 10px !important
+    font-weight: 600
+    color: #868686
     .t
       @include ellipsis
 
@@ -398,7 +418,7 @@
             vertical-align: top
             padding-right: 32px
             #wp-pool 
-                background: #fff
+                //background: #fff
                 overflow-y: auto
                 position: relative
                 z-index: 1
@@ -406,9 +426,11 @@
                 margin-left: -10px
                 margin-right: -10px
                 padding: 20px 0 0 0
+                .no-data
+                  margin-top: -44px
 #wp-column-header-group.wp-fixed
     position: absolute
-    background: #fff
+    //background: #fff
     z-index: 2
     left: 0
     top: 0
@@ -416,7 +438,7 @@
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
     box-sizing: border-box
-    border-spacing: 10px 0
+    border-spacing: 11px 0
     display: table
     list-style: none
     margin: 0
@@ -424,19 +446,24 @@
     width: 100%
     padding: 0
 .wp-column-headers .wp-column, .wp-columns .wp-column 
-    background: #F4F5F7
-    -moz-box-sizing: border-box
-    -webkit-box-sizing: border-box
-    box-sizing: border-box
-    display: table-cell
-    list-style: none
-    margin: 0
-    position: relative
-    vertical-align: top
-    padding: 10px
-    -webkit-border-radius: 4px
-    border-radius: 4px
-    font-size: 14px
+  background: #ffffff
+  -moz-box-sizing: border-box
+  -webkit-box-sizing: border-box
+  box-sizing: border-box
+  display: table-cell
+  list-style: none
+  margin: 0
+  position: relative
+  vertical-align: top
+  padding: 10px
+  border-radius: 10px
+  border: 1px solid #E8E8E8
+  font-size: 14px
+.wp-column-headers .wp-column
+  border-top: 5px solid #41A3F3
+  // padding: 15px
+  // border-radius: 10px 10px 0 0
+  // border-bottom: 0
 .wp-column
   .wp-column-header-flex
       display: flex
@@ -445,10 +472,10 @@
           display: flex
           max-width: 100%
   h2
-    color: #5E6C84
-    font-size: 12px
+    color: #404040
+    font-size: 14px
     font-weight: 600
-    text-transform: uppercase
+    //text-transform: uppercase
     flex: 0 100 auto
     overflow: hidden
     text-overflow: ellipsis
@@ -513,7 +540,7 @@
 .wp-columns
   margin-top: 10px
   .wp-column
-    padding: 1px 5px 0 !important
+    padding: 10px 15px 5px !important
 .wp-parent-group
   margin: 5px 0
   border-radius: 3px
@@ -622,3 +649,9 @@ aui-badge
   text-align: center
 .story-hide
   display: none
+.task-high-priority
+  border-left: 3px solid #FF001D
+.task-normal-priority
+  border-left: 3px solid #5ABE2B
+.task-low-priority
+  border-left: 3px solid #FFB354

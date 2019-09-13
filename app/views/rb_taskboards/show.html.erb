@@ -70,7 +70,35 @@ See doc/COPYRIGHT.rdoc for more details.
     <li class="toolbar-item">
       <%= show_burndown_link(@sprint) %>
     </li>
+    
   <% end %>
+  <%
+=begin%>
+ <li class="toolbar-item">
+  <button id="work-packages-settings-button" title="Settings" class="button last work-packages-settings-button toolbar-icon" has-dropdown-menu="" target="SettingsDropdownMenu" locals="query">
+            <op-icon icon-classes="button--icon icon-show-more" class="ng-isolate-scope op-icon--wrapper">
+    <i class="button--icon icon-show-more" aria-hidden="true"></i>
+    
+    </op-icon>
+          </button>
+     <div class="dropdown dropdown-relative dropdown-anchor-right dropdown-anchor-top" id="settingsDropdown">
+      <ul class="dropdown-menu">
+        <li class="{{action}}">
+          <a href="" focus="{{ !$index }}"
+            ng-class="{{ action }}"
+            ng-click="triggerMoreMenuAction(action, properties.link)">
+            <op-icon icon-classes="icon-context {{ properties.css.join(' ') }}"></op-icon>
+            text
+          </a>
+        </li>
+      </ul>
+    </div>
+    </li>
+    <li class="toolbar-item">
+      2
+    </li> 
+<%
+=end%>
 <% end %>
 
 <% breadcrumb_paths(link_to(l(:label_backlogs), backlogs_project_backlogs_path(@project)), link_to(@sprint.name, backlogs_project_backlogs_path(@sprint))) %>
@@ -79,7 +107,8 @@ See doc/COPYRIGHT.rdoc for more details.
     <div id="taskboard" class="wp-work-wrapper">
         <div id="wp-work" class="wp-work" style="height: 330px;">
             <div id="wp-pool-column">
-                <div id="wp-pool" style="display: block; padding-top: 36px;">
+                <div id="wp-pool" style="display: block; padding-top: 44px;">
+                    <% if @sprint.stories(@project).any? %>
                     <div id="wp-column-header-group" class="wp-column-header-group wp-fixed">
                         <ul id="wp-column-headers" class="wp-column-headers">                            
                             <% @statuses.each do |status| %>
@@ -94,7 +123,7 @@ See doc/COPYRIGHT.rdoc for more details.
                         </ul>                        
                     </div>
                        
-                    <% if @sprint.stories(@project).any? %>
+                    
                       <% @sprint.stories(@project).each do |story| %>
                       <div class="wp-swimlane wp-first <%= story_html_id_or_empty(story) %>">                   
                           <div class="wp-swimlane-header <%= isKanbanboard(@project) ? 'story-hide' : '' %>">                          

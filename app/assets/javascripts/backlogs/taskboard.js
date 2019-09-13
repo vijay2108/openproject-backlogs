@@ -50,7 +50,8 @@ RB.Taskboard = (function ($) {
       this.$.data('this', this);
 
       // Initialize column widths
-      this.colWidthUnit = $(".swimlane").width();
+      //this.colWidthUnit = $(".swimlane").width();
+      //this.colWidthUnit = $(".wp-column-headers .wp-column").width();
       this.defaultColWidth = 1;
       this.loadColWidthPreference();
       this.updateColWidths();
@@ -186,6 +187,8 @@ RB.Taskboard = (function ($) {
       $("#col_width input").val(w);
       RB.UserPreferences.set('taskboardColWidth', w);
       $(".swimlane").width(this.colWidthUnit * w).css('min-width', this.colWidthUnit * w);
+      $(".wp-column-headers .wp-column").width(this.colWidthUnit * w).css('min-width', this.colWidthUnit * w);
+      
     }
   });
 }(jQuery));
