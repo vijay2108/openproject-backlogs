@@ -40,7 +40,7 @@ See doc/COPYRIGHT.rdoc for more details.
 <% end %>
 <% html_title @sprint.name %>
 
-<%= toolbar title: @sprint.name do %> 
+<%= toolbar title: @sprint.name, project: @project.name.titleize do %>
   <% if @sprint.has_burndown? %>  
   <li class="toolbar-item">
     <div class="tooltips">
