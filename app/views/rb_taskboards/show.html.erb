@@ -72,33 +72,30 @@ See doc/COPYRIGHT.rdoc for more details.
     </li>
     
   <% end %>
-  <%
-=begin%>
- <li class="toolbar-item">
-  <button id="work-packages-settings-button" title="Settings" class="button last work-packages-settings-button toolbar-icon" has-dropdown-menu="" target="SettingsDropdownMenu" locals="query">
-            <op-icon icon-classes="button--icon icon-show-more" class="ng-isolate-scope op-icon--wrapper">
-    <i class="button--icon icon-show-more" aria-hidden="true"></i>
-    
-    </op-icon>
-          </button>
-     <div class="dropdown dropdown-relative dropdown-anchor-right dropdown-anchor-top" id="settingsDropdown">
-      <ul class="dropdown-menu">
-        <li class="{{action}}">
-          <a href="" focus="{{ !$index }}"
-            ng-class="{{ action }}"
-            ng-click="triggerMoreMenuAction(action, properties.link)">
-            <op-icon icon-classes="icon-context {{ properties.css.join(' ') }}"></op-icon>
-            text
-          </a>
-        </li>
-      </ul>
-    </div>
-    </li>
-    <li class="toolbar-item">
-      2
-    </li> 
-<%
-=end%>
+  <li class="toolbar-item">
+    <button class="button" title="Activate Filter" ng-click="" ng-disabled="vm.disabled" ng-class="{ '-active': vm.isActive() }" aria-label="">
+      <span class="button--text ml-0">EDIT</span>
+    </button>
+  </li>
+  <li class="toolbar-item">
+    <button name="button" type="submit" class="button">
+      <i class="button--icon icon-add" aria-hidden="true"></i>
+      <span class="button--text">COLUMN</span>      
+    </button>
+  </li>
+  <li class="toolbar-item">
+    <button name="button" type="submit" class="button -alt-highlight">
+      SAVE
+    </button>
+  </li>
+  <li class="toolbar-item">
+    <button id="work-packages-settings-button" title="Settings" class="button last work-packages-settings-button toolbar-icon" has-dropdown-menu="" target="SettingsDropdownMenu" locals="query">
+      <op-icon icon-classes="button--icon icon-show-more" class="ng-isolate-scope op-icon--wrapper">
+        <i class="button--icon icon-show-more" aria-hidden="true"></i>
+        <!-- ngIf: title -->
+      </op-icon>
+    </button>
+  </li>
 <% end %>
 
 <% breadcrumb_paths(link_to(l(:label_backlogs), backlogs_project_backlogs_path(@project)), link_to(@sprint.name, backlogs_project_backlogs_path(@sprint))) %>
@@ -199,6 +196,31 @@ See doc/COPYRIGHT.rdoc for more details.
     <div id="preloader">
       <div id="spinner"> </div>
       <div id="warning"> </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="aside-panel-outer offcanvas-open">
+  <div class="aside-panel aside-panel-first aside-panel-animate">
+    <div class="aside-content px-30">
+        <div class="aside-header d-flex justify-content-between align-items-center">
+            <h6 class="m-0"><%#= l(:label_news_new) %>ADD COLUMN</h6>
+            <div class="close-btn"><a href="javascript:void(0)"><em class="icon icon-close d-block"></em></a></div>
+        </div>       
+        <div class="aside-body create-news py-20">
+            <%
+=begin%>
+ <%= labelled_tabular_form_for [@project, @news], html: { id: 'news-form' } do |f| %>
+                <%= render partial: 'news/form', locals: { f: f } %>
+            <% end %>     
+<%
+=end%>
+        </div>
+        <div class="aside-footer text-right">
+            <button class="button -light-gray" type="button">CANCEL</button>
+            <button class="button -alt-highlight ml-20" type="button">ADD</button>
+        </div>
     </div>
   </div>
 </div>

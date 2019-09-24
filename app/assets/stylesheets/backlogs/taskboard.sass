@@ -64,10 +64,10 @@
   #assigned_to_id_options
     display: none
   .swimlane
-    min-width: 105px
+    min-width: 170px
     /* width + (2*margin) + (2*padding) + (2*border) of .work_package */
     padding: 5px 0 0 5px
-    width: 105px
+    width: 170px
     /* Must be the same as min-width */
     //border-radius: 0 0 10px 10px
     //border-top: 0
@@ -371,6 +371,13 @@
       color: #C7C7C7 !important
     span
       color: #868686
+      margin-right: 5px
+  &.priority-low
+    border-left: 3px solid #FFB354 !important
+  &.priority-normal
+    border-left: 3px solid #5ABE2B !important
+  &.priority-high
+    border-left: 3px solid #FF001D !important
 .task_type, .task_priority
     display: inline-block
 .story
@@ -461,6 +468,8 @@
   font-size: 14px
 .wp-column-headers .wp-column
   border-top: 5px solid #41A3F3
+  min-width: 170px
+  width: 170px
   // padding: 15px
   // border-radius: 10px 10px 0 0
   // border-bottom: 0
