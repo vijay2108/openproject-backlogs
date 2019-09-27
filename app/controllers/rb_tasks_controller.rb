@@ -41,6 +41,7 @@ class RbTasksController < RbApplicationController
   PERMITTED_PARAMS = ["id", "type_id", "priority_id", "subject", "assigned_to_id", "remaining_hours", "parent_id",
                       "estimated_hours", "status_id", "prev", "sprint_id"]
 
+
   def create
     @task = Task.create_with_relationships(task_params, @project.id)
 
@@ -54,7 +55,8 @@ class RbTasksController < RbApplicationController
 
   def update
     @task = Task.find(task_params[:id])
-    result = @task.update_with_relationships(task_params)
+    task_params_new  =@task.kanban_board.present? ?  task_params.except(:sprint_id) : task_params
+    result = @task.update_with_relationships(task_params_new)
     status = (result ? 200 : 400)
     @include_meta = true
 
@@ -63,7 +65,7 @@ class RbTasksController < RbApplicationController
     end
   end
 
-private
+  private
   def task_params
     params.permit(PERMITTED_PARAMS)
   end

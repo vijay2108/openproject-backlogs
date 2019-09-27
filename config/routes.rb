@@ -45,6 +45,8 @@ OpenProject::Application.routes.draw do
 
         resource :wiki,             controller: :rb_wikis,            only: [:show, :edit]
 
+        resource :kanban_boards,     controller: :rb_kanban_boards,       only: [:show, :edit]
+
         resource :burndown_chart,   controller: :rb_burndown_charts,  only: :show
 
         resources :impediments,      controller: :rb_impediments,      only: [:create, :update]

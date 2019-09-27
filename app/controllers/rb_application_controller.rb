@@ -37,7 +37,7 @@
 class RbApplicationController < ApplicationController
   helper :rb_common
 
-  before_action :load_sprint_and_project, :check_if_plugin_is_configured, :authorize
+  before_action :load_sprint_and_project, :check_if_plugin_is_configured
 
   skip_before_action :verify_authenticity_token, if: -> { Rails.env.test? }
 
@@ -48,7 +48,21 @@ class RbApplicationController < ApplicationController
   def load_sprint_and_project
     # because of strong params, we want to pluck this variable out right now,
     # otherwise it causes issues where we are doing `attributes=`.
-    if (@sprint_id = params.delete(:sprint_id))
+    if params[:controller] == "rb_kanban_boards"
+      @sprint_id = params[:sprint_id]
+      @sprint = KanbanBoard.find(@sprint_id)
+    elsif params[:action] == "update"
+      @task = WorkPackage.find(params[:id])
+      if @task.kanban_board.present?
+        @sprint_id = params[:sprint_id]
+        @sprint = KanbanBoard.find(@sprint_id)
+      else
+        @sprint_id = params[:sprint_id]
+        @sprint = Sprint.find(@sprint_id)
+        @project = @sprint.project
+      end
+    else
+      @sprint_id = params[:sprint_id]
       @sprint = Sprint.find(@sprint_id)
       @project = @sprint.project
     end
