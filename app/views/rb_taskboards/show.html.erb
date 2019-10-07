@@ -40,139 +40,89 @@ See doc/COPYRIGHT.rdoc for more details.
 <% end %>
 <% html_title @sprint.name %>
 
-<%= toolbar title: @sprint.name, project: @project.name.titleize do %>
-  <% if @sprint.has_burndown? %>  
+<%= toolbar title: @sprint.name do %>
+
   <li class="toolbar-item">
-    <div class="tooltips">
-    <a><i class="button--icon icon-time" aria-hidden="true"></i>
-    <% if (DateTime.now <= @sprint.effective_date) %>
-      <%= distance_of_time_in_words(@sprint.effective_date, DateTime.now) %> remaining 
-    <% else %>
-       completed <%= distance_of_time_in_words(@sprint.effective_date, DateTime.now) %> ago
-    <% end %>
-      <ul>
-        <li>Start Date:</li>
-        <li class="space"><%= @sprint.start_date %></li>
-        <li>Projected End Date:</li>
-        <li><%= @sprint.effective_date %></li>
-      </ul> 
-    </a> 
-    </div>
-    </li>
-  <% end %>
-  <li class="toolbar-item toolbar-input-group" id="col_width">
-    <div>
-      <label for="col_width_input"><%= l('backlogs.column_width') %></label>
-    </div>
-    <input type="text" id="col_width_input">
-  </li>
-  <% if @sprint.has_burndown? %>
-    <li class="toolbar-item">
-      <%= show_burndown_link(@sprint) %>
-    </li>
-    
-  <% end %>
-  <li class="toolbar-item">
-    <button class="button" title="Activate Filter" ng-click="" ng-disabled="vm.disabled" ng-class="{ '-active': vm.isActive() }" aria-label="">
-      <span class="button--text ml-0">EDIT</span>
-    </button>
-  </li>
-  <li class="toolbar-item">
-    <button name="button" type="submit" class="button">
-      <i class="button--icon icon-add" aria-hidden="true"></i>
-      <span class="button--text">COLUMN</span>      
-    </button>
-  </li>
-  <li class="toolbar-item">
-    <button name="button" type="submit" class="button -alt-highlight">
-      SAVE
-    </button>
-  </li>
-  <li class="toolbar-item">
-    <button id="work-packages-settings-button" title="Settings" class="button last work-packages-settings-button toolbar-icon" has-dropdown-menu="" target="SettingsDropdownMenu" locals="query">
-      <op-icon icon-classes="button--icon icon-show-more" class="ng-isolate-scope op-icon--wrapper">
-        <i class="button--icon icon-show-more" aria-hidden="true"></i>
-        <!-- ngIf: title -->
-      </op-icon>
-    </button>
+    <%#= link_to l(:label_kanban_board_edit),
+                  edit_project_kanban_board_path(@project.id,@sprint.id)
+    %>
   </li>
 <% end %>
 
 <% breadcrumb_paths(link_to(l(:label_backlogs), backlogs_project_backlogs_path(@project)), link_to(@sprint.name, backlogs_project_backlogs_path(@sprint))) %>
 
 <div id='rb'>
-    <div id="taskboard" class="wp-work-wrapper">
-        <div id="wp-work" class="wp-work" style="height: 330px;">
-            <div id="wp-pool-column">
-                <div id="wp-pool" style="display: block; padding-top: 44px;">
-                    <% if @sprint.stories(@project).any? %>
-                    <div id="wp-column-header-group" class="wp-column-header-group wp-fixed">
-                        <ul id="wp-column-headers" class="wp-column-headers">                            
-                            <% @statuses.each do |status| %>
-                              <li class="wp-column">
-                                <div class="wp-column-header-flex">
-                                    <div class="wp-column-header-flex-1">
-                                      <h2><%= status.name %></h2>
-                                      </div>
-                                  </div>
-                              </li>
-                            <% end %>
-                        </ul>                        
+  <div id="taskboard" class="wp-work-wrapper">
+    <div id="wp-work" class="wp-work" style="height: 330px;">
+      <div id="wp-pool-column">
+        <div id="wp-pool" style="display: block; padding-top: 36px;">
+          <div id="wp-column-header-group" class="wp-column-header-group wp-fixed">
+            <ul id="wp-column-headers" class="wp-column-headers">
+              <% @statuses.each do |status| %>
+                <li class="wp-column">
+                  <div class="wp-column-header-flex">
+                    <div class="wp-column-header-flex-1">
+                      <h2><%= status.name %></h2>
                     </div>
-                       
-                    
-                      <% @sprint.stories(@project).each do |story| %>
-                      <div class="wp-swimlane wp-first <%= story_html_id_or_empty(story) %>">                   
-                          <div class="wp-swimlane-header <%= isKanbanboard(@project) ? 'story-hide' : '' %>">                          
-                            <div class="wp-heading story <%= mark_if_closed(story) %>" id="<%= story_html_id_or_empty(story) %>">
+                  </div>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+
+          <% if @sprint.stories(@project).any? %>
+            <% @sprint.stories(@project).each do |story| %>
+              <div class="wp-swimlane wp-first <%= story_html_id_or_empty(story) %>">
+                <div class="wp-swimlane-header <%= isKanbanboard(@project) ? 'story-hide' : '' %>">
+                  <div class="wp-heading story <%= mark_if_closed(story) %>" id="<%= story_html_id_or_empty(story) %>">
                                 <span class="wp-swimlane-avatar">
                                 <%= image_tag task_type_icon(story), class: "" %>
                                 </span>
-                                
-                                <%= work_package_link_or_empty(story) %>
-                                <span class="wp-info">
+
+                    <%= work_package_link_or_empty(story) %>
+                    <span class="wp-info">
                                     <span class="aui-lozenge"><%= story.status.name %></span>
                                 </span>
-                                <span class="wp-summary"> 
+                    <span class="wp-summary">
                                     <%= story.subject %>
                                 </span>
-                            </div>
-                          </div>
-
-                          <div id="tasks">     
-                            <ul class="wp-columns">
-                                <% @statuses.each do |status| %>
-                                <% if isKanbanboard(@project) == false %>
-                                  <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
-                                      <%= render :partial => "rb_tasks/task",
-                                              :collection => story.tasks.select { |task| task.status.id == status.id } %>
-                                  </li>
-                                <% else %>
-                                  <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
-                                      <%= render :partial => "rb_tasks/task",
-                                              :collection => story.kanban_tasks.select { |task| task.status.id == status.id } %>
-                                  </li>
-                                <% end %>
-                                <% end %>        
-                              </ul>
-                          </div>
-                      </div>
-                      <% end %>
-                    <% else %>
-                         <div class="no-data">
-                            <div class="no-data-content">
-                              <span class="no-data-img"></span>
-                              <span class="no-data-title">There are no tasks for this board</span>
-                            </div>
-                        </div>
-                    <% end %>
+                  </div>
                 </div>
+
+                <div id="tasks">
+                  <ul class="wp-columns">
+                    <% @statuses.each do |status| %>
+                      <% if isKanbanboard(@project) == false %>
+                        <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
+                          <%= render :partial => "rb_tasks/task",
+                                     :collection => story.tasks.select { |task| task.status.id == status.id } %>
+                        </li>
+                      <% else %>
+                        <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
+                          <%= render :partial => "rb_tasks/task",
+                                     :collection => story.kanban_tasks.select { |task| task.status.id == status.id } %>
+                        </li>
+                      <% end %>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="no-data">
+              <div class="no-data-content">
+                <span class="no-data-img"></span>
+                <span class="no-data-title">There are no tasks for this board</span>
+              </div>
             </div>
+          <% end %>
         </div>
-    </div> 
-  
-  
-  
+      </div>
+    </div>
+  </div>
+
+
+
 
   <div id="helpers">
     <select class="assigned_to_id template" id="assigned_to_id_options">
@@ -196,31 +146,6 @@ See doc/COPYRIGHT.rdoc for more details.
     <div id="preloader">
       <div id="spinner"> </div>
       <div id="warning"> </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="aside-panel-outer offcanvas-open1">
-  <div class="aside-panel aside-panel-first aside-panel-animate">
-    <div class="aside-content px-30">
-        <div class="aside-header d-flex justify-content-between align-items-center">
-            <h6 class="m-0"><%#= l(:label_news_new) %>ADD COLUMN</h6>
-            <div class="close-btn"><a href="javascript:void(0)"><em class="icon icon-close d-block"></em></a></div>
-        </div>       
-        <div class="aside-body create-news py-20">
-            <%
-=begin%>
- <%= labelled_tabular_form_for [@project, @news], html: { id: 'news-form' } do |f| %>
-                <%= render partial: 'news/form', locals: { f: f } %>
-            <% end %>     
-<%
-=end%>
-        </div>
-        <div class="aside-footer text-right">
-            <button class="button -light-gray" type="button">CANCEL</button>
-            <button class="button -alt-highlight ml-20" type="button">ADD</button>
-        </div>
     </div>
   </div>
 </div>
