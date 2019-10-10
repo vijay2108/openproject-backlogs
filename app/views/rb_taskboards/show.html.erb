@@ -34,6 +34,10 @@ See doc/COPYRIGHT.rdoc for more details.
 
 ++#%>
 
+<%
+  managable = ApplicationHelper.get_kanban_status?(@project)
+%>
+
 <% content_for :header_tags do %>
   <%= render :partial => 'shared/backlogs_header' %>
   <%= stylesheet_link_tag 'backlogs/taskboard.css' %>
@@ -42,11 +46,25 @@ See doc/COPYRIGHT.rdoc for more details.
 
 <%= toolbar title: @sprint.name do %>
 
-  <li class="toolbar-item">
+  <% if managable %>
+    <li class="toolbar-item">
+      <%= link_to "#",
+                  { class: 'button -alt-highlight',
+                    id: 'new_news_link',
+                    aria: {label: t(:label_news_new)},
+                    title: t(:label_news_new),
+                    onclick: 'jQuery("#kanban-side-panel").addClass("offcanvas-open");'} do %>
+        <%= op_icon('button--icon icon-add') %>
+        <span class="button--text"><%= t(:label_new_kanban) %></span>
+      <% end %>
+    </li>
+  <% end %>
+
+<!--  <li class="toolbar-item">-->
     <%#= link_to l(:label_kanban_board_edit),
                   edit_project_kanban_board_path(@project.id,@sprint.id)
     %>
-  </li>
+<!--  </li>-->
 <% end %>
 
 <% breadcrumb_paths(link_to(l(:label_backlogs), backlogs_project_backlogs_path(@project)), link_to(@sprint.name, backlogs_project_backlogs_path(@sprint))) %>
@@ -151,8 +169,8 @@ See doc/COPYRIGHT.rdoc for more details.
 </div>
 
 
-<div id="kanban-side-panel" class="aside-panel-outer offcanvas-open">
-  <div class="aside-panel aside-panel-first aside-panel-animate">
+<div id="new-kanban-side-panel" class="new-kanban aside-panel-outer">
+  <div class="aside-panel aside-panel-first">
     <div class="aside-content px-30">
       <div class="aside-header d-flex justify-content-between align-items-center">
         <h6 class="m-0"><%= l(:label_new_kanban) %></h6>
@@ -160,7 +178,7 @@ See doc/COPYRIGHT.rdoc for more details.
       </div>
       <div class="aside-body create-news py-20">
         <p class="mb-20">Select the workflow where the Kanban belongs.</p>
-        <%= labelled_tabular_form_for [@project, @kanban_board], html: { id: 'news-form' } do |f| %>
+        <%= labelled_tabular_form_for [@project, @kanban_board], html: { id: 'kanban-form' } do |f| %>
           <%= render partial: 'kanban_boards/form', locals: { f: f } %>
           <div class="aside-footer text-right">
             <%= styled_button_tag l(:button_cancel), class: 'button -light-gray close-panel-btn' %>
