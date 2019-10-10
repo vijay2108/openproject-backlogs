@@ -45,7 +45,8 @@ class RbTaskboardsController < RbApplicationController
     else
       @selectedworkflow = 0
     end
-    
+
+    @kanban_board = @project.kanban_boards.new
     @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
     @statuses = []
     @temparray = []

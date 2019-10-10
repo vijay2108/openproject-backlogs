@@ -149,3 +149,25 @@ See doc/COPYRIGHT.rdoc for more details.
     </div>
   </div>
 </div>
+
+
+<div id="kanban-side-panel" class="aside-panel-outer offcanvas-open">
+  <div class="aside-panel aside-panel-first aside-panel-animate">
+    <div class="aside-content px-30">
+      <div class="aside-header d-flex justify-content-between align-items-center">
+        <h6 class="m-0"><%= l(:label_new_kanban) %></h6>
+        <div class="close-btn close-panel-btn"><a href="javascript:void(0)"><em class="icon icon-close d-block"></em></a></div>
+      </div>
+      <div class="aside-body create-news py-20">
+        <h4 class="m-0">Select the workflow where the Kanban belongs.</h4>
+        <%= labelled_tabular_form_for [@project, @kanban_board], html: { id: 'news-form' } do |f| %>
+          <%= render partial: 'kanban_boards/form', locals: { f: f } %>
+          <div class="aside-footer text-right">
+            <%= styled_button_tag l(:button_cancel), class: 'button -light-gray close-panel-btn' %>
+            <%= styled_button_tag l(:button_create), class: 'button -alt-highlight ml-20' %>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
