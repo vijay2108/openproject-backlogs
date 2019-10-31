@@ -59,12 +59,78 @@ class RbTasksController < RbApplicationController
     result = @task.update_with_relationships(task_params_new)
     status = (result ? 200 : 400)
     @include_meta = true
-
     respond_to do |format|
       format.html { render partial: 'task', object: @task, status: status }
     end
   end
 
+  def update_task
+
+    @task = Task.find(task_params[:id])
+       task_params_new  =@task.kanban_board.present? ?  task_params.except(:sprint_id) : task_params
+       @time_entry = new_time_entry(@project,WorkPackage.find(@task.id), {hours: params[:log_hour].present? ? params[:log_hour] : 0})
+       if @time_entry.save
+         result = @task.update_with_relationships(task_params_new)
+         status = (result ? 200 : 400) 
+       else
+          status = 400 
+       end
+    #    @time_entry = TimelogController.new.create(@project, @task, params[:log_hour].to_h)
+
+    # TimelogController.save_time_entry_and_respond @time_entry
+       @include_meta = true
+       respond_to do |format|
+         format.html { render partial: 'task', object: @task, status: status }
+       end
+  end  
+
+
+  def check_transition
+    @t  =Task.find params[:parent_id]
+    @kanban_board =  KanbanBoard.find @t.kanban_board_id
+    from = WorkflowStatus.find_by_status_id_and_wi_id(@t.status_id, @kanban_board.wi_id)
+    to =  WorkflowStatus.find_by_status_id_and_wi_id(params[:status_id], @kanban_board.wi_id)
+    @workflowInformation = WorkflowInformation.find @kanban_board.wi_id 
+    @workfow_transition = WorkflowTransition.where(from_workflow_status_id: from.id , to_workflow_status_id: to.id)
+    respond_to do |format|
+      if @workfow_transition.present? && @workfow_transition.is_log_hours==true
+        format.json {render :json => {:success => true } }
+      else
+        format.json {render :json => {:success => false } }
+      end  
+    end
+  end 
+
+  
+  def new_time_entry(project, work_package, attributes)
+    time_entry = TimeEntry.new(project: project,
+                               work_package: work_package,
+                               user: User.current,
+                               spent_on: User.current.today)
+
+    time_entry.attributes = attributes
+
+    time_entry
+  end
+
+  def save_time_entry_and_respond(time_entry)
+    # call_hook(:controller_timelog_edit_before_save, params: params, time_entry: time_entry)
+
+    # if @time_entry.save
+    #   respond_to do |format|
+    #     format.html do
+    #       flash[:notice] = l(:notice_successful_update)
+    #       redirect_back_or_default action: 'index', project_id: time_entry.project
+    #     end
+    #   end
+    # else
+    #   respond_to do |format|
+    #     format.html do
+    #       render action: 'edit'
+    #     end
+    #   end
+    # end
+  end
   private
   def task_params
     params.permit(PERMITTED_PARAMS)

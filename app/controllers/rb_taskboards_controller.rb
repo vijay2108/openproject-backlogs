@@ -45,22 +45,22 @@ class RbTaskboardsController < RbApplicationController
     else
       @selectedworkflow = 0
     end
-
     @kanban_board = @project.kanban_boards.new
-    @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
-    @statuses = []
+    @kanban_boards = @project.kanban_boards
+    @workflow_informations = WorkflowInformation.where(id: @kanban_boards.collect(&:wi_id))
+    @workflow_status = WorkflowStatus.where( wi_id: @workflow_informations.collect(&:id))
+    @statuses = Status.where(@workflow_status.collect(&:status_id)).uniq
+    # @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
     @temparray = []
-    @workflows.each do |workflow|
-      if !@temparray.include?(workflow.old_status_id)
-        @statuses.push(Status.find(workflow.old_status_id))
-        @temparray.push(workflow.old_status_id)
-      end
-    end
+    # @workflow_status.each do |workflow_status|
+    #     @statuses.push(Status.find(workflow_status.status_id))
+    #     # @temparray.push(workflow.old_status_id)
+    # end
     #@statuses     = Type.find(Task.type).statuses
-    @story_ids    = @sprint.stories(@project).map(&:id)
-    @last_updated = Task.where(parent_id: @story_ids)
-                        .order('updated_at DESC')
-                        .first
+    @story_ids    = Task.where(type_id: Task.type, kanban_board_id: @kanban_boards.collect(&:id).compact)
+    # @last_updated = Task.where(parent_id: @story_ids)
+    #                     .order('updated_at DESC')
+    #                     .first
   end
 
   def default_breadcrumb

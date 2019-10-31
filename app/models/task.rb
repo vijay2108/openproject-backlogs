@@ -77,9 +77,11 @@ class Task < WorkPackage
 
   def update_with_relationships(params, _is_impediment = false)
     prev = params.delete(:prev)
-    update_with_relationships_without_move(params).tap do |result|
-      move_after(prev) if result
-    end
+    self.status_id = params[:status_id]
+    if self.save
+      move_after(prev)
+    end 
+    return self
   end
 
   # Assumes the task is already under the same story as 'prev_id'
@@ -88,7 +90,7 @@ class Task < WorkPackage
       sib = siblings
       move_to_left_of(sib[0].id) if sib.any?
     else
-      move_to_right_of(prev_id)
+      self
     end
   end
 

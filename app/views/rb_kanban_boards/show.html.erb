@@ -115,8 +115,7 @@ See doc/COPYRIGHT.rdoc for more details.
 
 
 
-
-  <div id="helpers">
+ <div id="helpers">
     <select class="assigned_to_id template" id="assigned_to_id_options">
       <option value=""> </option>
       <% @project.possible_assignees.each do |user| %>
@@ -140,4 +139,52 @@ See doc/COPYRIGHT.rdoc for more details.
       <div id="warning"> </div>
     </div>
   </div>
+</div>
+
+<!--Modal-->
+<div class="ng-modal-window logwork-modal loading-indicator--location" style="display:none" data-indicator-name="modal">
+ <div class="ng-modal-inner">
+   <div class="modal-header d-flex justify-content-between">
+     <h2 class="ng-binding">Log Hours- #4772</h2>
+     <a class="close-btn"><i class="icon-close" ng-click="$ctrl.closeMe()" title="Close popup" role="button" tabindex="0"></i></a>
+   </div>
+   
+   <div class="modal-content">
+     <p>To proceed further, please log your work.</p>
+     <div class="form--field mb-0">
+       <label class="form--label">HOURS</label>
+       <span class="form--field-container"><span class="form--text-field-container -wide"><input required="required" autofocus="autofocus" container_class="-wide" class="form--text-field" aria-required="true" type="text" value="" name="project[name]" id="project_name"></span></span>
+     </div>
+   </div>
+   <div class="modal-footer text-right">
+     <button class="button -alt-highlight m-0">
+       DONE
+     </button>
+   </div>
+ </div>
+</div>
+
+
+
+<!--Modal-->
+<div class="ng-modal-window logwork-modal loading-indicator--location" style="display:none" data-indicator-name="modal">
+ <div class="ng-modal-inner">
+   <div class="modal-header d-flex justify-content-between">
+     <h2 class="ng-binding">Log Hours- #4772</h2>
+     <a class="close-btn"><i class="icon-close" ng-click="$ctrl.closeMe()" title="Close popup" role="button" tabindex="0"></i></a>
+   </div>
+   
+   <div class="modal-content">
+     <p>To proceed further, please log your work.</p>
+     <div class="form--field mb-0">
+       <label class="form--label">HOURS</label>
+       <span class="form--field-container"><span class="form--text-field-container -wide"><input required="required" autofocus="autofocus" container_class="-wide" class="form--text-field log_hours" aria-required="true" type="text" value="" name="project[name]" id="project_name"></span></span>
+     </div>
+   </div>
+   <div class="modal-footer text-right">
+     <button class="button -alt-highlight m-0 log-hour-done">
+       DONE
+     </button>
+   </div>
+ </div>
 </div>
