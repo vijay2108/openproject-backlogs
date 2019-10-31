@@ -81,32 +81,35 @@ RB.Task = (function ($) {
 
     saveDirectives: function () {
       var prev, cellId, data, url;
-
-      prev = this.$.prev();
-      cellId = this.$.parent('li').first().attr('id').split("_");
-
-      data = this.$.find('.editor').serialize() +
-                 "&parent_id=" + cellId[0] +
-                 "&status_id=" + cellId[1] +
-                 "&prev=" + (prev.length === 1 ? prev.data('this').getID() : '') +
+      window.url = ""        
+      window.prev = this.$.prev();
+      window.cellId = this.$.parent('li').first().attr('id').split("_");
+      window.current = this
+      window.data = this.$.find('.editor').serialize() +
+                 "&parent_id=" + window.cellId[0] +
+                 "&status_id=" + window.cellId[1] +
+                 "&prev=" + (window.prev.length === 1 ? window.prev.data('this').getID() : '') +
                  (this.isNew() ? "" : "&id=" + this.$.children('.id').text());
+                 
+        if (current.isNew()) {
+          window.url = RB.urlFor('create_task', {sprint_id: RB.constants.sprint_id});
+        }
+        else {
+          window.url = RB.urlFor('update_task', {id: current.getID(), sprint_id: RB.constants.sprint_id});
+          window.data += "&_method=put";
+          
+        }
 
-      if (this.isNew()) {
-        url = RB.urlFor('create_task', {sprint_id: RB.constants.sprint_id});
-      }
-      else {
-        url = RB.urlFor('update_task', {id: this.getID(), sprint_id: RB.constants.sprint_id});
-        data += "&_method=put";
-      }
-
-      return {
-        url: url,
-        data: data
-      };
+        return {
+          url: window.url,
+          data: window.data
+        };
     },
 
     beforeSaveDragResult: function () {
       if (this.$.parent('li').first().hasClass('closed')) {
+        
+        // $(".logwork-modal").show()
         // This is only for the purpose of making the Remaining Hours reset
         // instantaneously after dragging to a closed status. The server should
         // still make sure to reset the value.

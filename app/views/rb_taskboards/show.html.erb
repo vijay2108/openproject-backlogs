@@ -87,11 +87,11 @@ See doc/COPYRIGHT.rdoc for more details.
               <% end %>
             </ul>
           </div>
-
-          <% if @sprint.stories(@project).any? %>
-            <% @sprint.stories(@project).each do |story| %>
+          <% @statuses_rmv = [] %>
+          <% if @story_ids.present? %>
+            <% @story_ids.each do |story| %>
               <div class="wp-swimlane wp-first <%= story_html_id_or_empty(story) %>">
-                <div class="wp-swimlane-header <%= isKanbanboard(@project) ? 'story-hide' : '' %>">
+                <div class="wp-swimlane-header <%= @project.is_multi_kanban ? 'story-hide' : '' %>">
                   <div class="wp-heading story <%= mark_if_closed(story) %>" id="<%= story_html_id_or_empty(story) %>">
                                 <span class="wp-swimlane-avatar">
                                 <%= image_tag task_type_icon(story), class: "" %>
@@ -110,17 +110,14 @@ See doc/COPYRIGHT.rdoc for more details.
                 <div id="tasks">
                   <ul class="wp-columns">
                     <% @statuses.each do |status| %>
-                      <% if isKanbanboard(@project) == false %>
-                        <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
+
+                      <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
+                        <% if story.status.id == status.id%>
                           <%= render :partial => "rb_tasks/task",
-                                     :collection => story.tasks.select { |task| task.status.id == status.id } %>
-                        </li>
-                      <% else %>
-                        <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
-                          <%= render :partial => "rb_tasks/task",
-                                     :collection => story.kanban_tasks.select { |task| task.status.id == status.id } %>
-                        </li>
-                      <% end %>
+                                     :locals => { :task => story}  %>
+                        <% end %>
+                      </li>
+
                     <% end %>
                   </ul>
                 </div>
@@ -133,8 +130,7 @@ See doc/COPYRIGHT.rdoc for more details.
                 <span class="no-data-title">There are no tasks for this board</span>
               </div>
             </div>
-          <% end %>
-        </div>
+          <% end %>        </div>
       </div>
     </div>
   </div>

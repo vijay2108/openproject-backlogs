@@ -3,6 +3,17 @@ class RbKanbanBoardsController < RbApplicationController
 
   helper :taskboards
 
+
+  def create
+      @kanban_board = @project.kanban_boards.new(name: params[:kanban_board]["name"],wi_id: params[:wi_id])
+    if @kanban_board.save
+      flash[:notice] = l(:notice_successful_create)
+       redirect_to backlogs_project_sprint_kanban_boards_path(@project.identifier,@kanban_board.id)
+    else       
+      render action: 'new'
+    end
+  end
+
   def show
     @sprint = KanbanBoard.find params[:sprint_id]
     if @sprint.wi_id.present?
@@ -10,13 +21,13 @@ class RbKanbanBoardsController < RbApplicationController
     else
       @selectedworkflow = 0
     end
-    
-    @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
+    @workfows_status = WorkflowStatus.where(wi_id: @selectedworkflow)
+   @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
     @statuses = []
     @temparray = []
     @workflows.each do |workflow|
-      if !@temparray.include?(workflow.old_status_id)
-        @statuses.push(Status.find(workflow.old_status_id))
+      unless workflow.workflow_status_id == 0
+        @statuses.push(Status.find(WorkflowStatus.find(workflow.workflow_status_id).status_id))
         @temparray.push(workflow.old_status_id)
       end
     end

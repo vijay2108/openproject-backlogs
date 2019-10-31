@@ -465,22 +465,54 @@ RB.Model = (function ($) {
 
       // Get the save directives.
       saveDir = self.saveDirectives();
-
       self.beforeSave();
 
       self.unmarkError();
       self.markSaving();
+
+      RB.ajax({
+        type: "GET",
+        url: "/rb_tasks/check_transition",
+        data: saveDir.data,
+        success   : function (d) {
+          if (d.success == true){
+            $(".logwork-modal").show();
+          }
+          else{
+  RB.ajax({
+        type: "POST",
+        url: saveDir.url,
+        data: saveDir.data,
+        success   : function (d, t, x) {
+          jQuery(".logwork-modal").hide();
+          self.afterSave(d, t, x);
+        },
+        error     : function (x, t, e) {
+          jQuery(".logwork-modal").hide();
+          self.error(x, t, e);
+        }
+      });          } 
+        },
+        error     : function (x) {
+          $(".logwork-modal").hide();
+        }
+      });
+      jQuery(".log-hour-done").click(function(){
+      saveDir.data += "&log_hour=" + jQuery(".log_hours").val()
       RB.ajax({
         type: "POST",
         url: saveDir.url,
         data: saveDir.data,
         success   : function (d, t, x) {
+          jQuery(".logwork-modal").hide();
           self.afterSave(d, t, x);
         },
         error     : function (x, t, e) {
+          jQuery(".logwork-modal").hide();
           self.error(x, t, e);
         }
       });
+    });
       self.endEdit();
     },
 

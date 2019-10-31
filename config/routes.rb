@@ -37,6 +37,13 @@ OpenProject::Application.routes.draw do
   scope '', as: 'backlogs' do
     scope 'projects/:project_id', as: 'project' do
       resources :backlogs,         controller: :rb_master_backlogs,  only: :index
+        resources :kanban_boards,     controller: :rb_kanban_boards do
+            resources :tasks,            controller: :rb_tasks do
+               member do
+                  put :update_task
+                end
+              end
+          end
 
       resources :sprints,          controller: :rb_sprints,          only: :update do
         resource :query,            controller: :rb_queries,          only: :show
@@ -61,7 +68,7 @@ OpenProject::Application.routes.draw do
       end
     end
   end
-
+  get'rb_tasks/check_transition'=> 'rb_tasks#check_transition'
   get 'projects/:project_id/versions/:id/edit' => 'version_settings#edit'
   post 'projects/:id/project_done_statuses' => 'projects#project_done_statuses'
   post 'projects/:id/rebuild_positions' => 'projects#rebuild_positions'

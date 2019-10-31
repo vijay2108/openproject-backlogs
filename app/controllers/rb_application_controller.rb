@@ -50,11 +50,17 @@ class RbApplicationController < ApplicationController
     # otherwise it causes issues where we are doing `attributes=`.
     if params[:controller] == "rb_kanban_boards"
       @sprint_id = params[:sprint_id]
+      if params[:sprint_id].present?
+
       @sprint = KanbanBoard.find(@sprint_id)
-    elsif params[:action] == "update"
-      @task = WorkPackage.find(params[:id])
+    end
+
+    elsif params[:action] == "check_transition"
+      
+    elsif params[:action] == "update" || params[:action] == "update_task" 
+       @task = WorkPackage.find(params[:id])
       if @task.kanban_board.present?
-        @sprint_id = params[:sprint_id]
+        @sprint_id = params[:kanban_board_id]
         @sprint = KanbanBoard.find(@sprint_id)
       else
         @sprint_id = params[:sprint_id]
