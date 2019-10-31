@@ -93,8 +93,12 @@ class RbTasksController < RbApplicationController
     @workflowInformation = WorkflowInformation.find @kanban_board.wi_id 
     @workfow_transition = WorkflowTransition.where(from_workflow_status_id: from.id , to_workflow_status_id: to.id)
     respond_to do |format|
-      if @workfow_transition.present? && @workfow_transition.is_log_hours==true
-        format.json {render :json => {:success => true } }
+      if @workfow_transition.present? 
+        if @workfow_transition.last.is_log_hours==true
+         format.json {render :json => {:success => true } }
+        else
+          format.json {render :json => {:success => false } }
+        end  
       else
         format.json {render :json => {:success => false } }
       end  

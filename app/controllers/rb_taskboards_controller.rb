@@ -49,7 +49,7 @@ class RbTaskboardsController < RbApplicationController
     @kanban_boards = @project.kanban_boards
     @workflow_informations = WorkflowInformation.where(id: @kanban_boards.collect(&:wi_id))
     @workflow_status = WorkflowStatus.where( wi_id: @workflow_informations.collect(&:id))
-    @statuses = Status.where(@workflow_status.collect(&:status_id)).uniq
+    @statuses = Status.where(id: @workflow_status.collect(&:status_id).uniq)
     # @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
     @temparray = []
     # @workflow_status.each do |workflow_status|
