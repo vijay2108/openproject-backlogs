@@ -24,14 +24,21 @@ class RbKanbanBoardsController < RbApplicationController
     @workfows_status = WorkflowStatus.where(wi_id: @selectedworkflow)
    @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
     @statuses = []
+    @last_status= []
     @temparray = []
     @workflows.each do |workflow|
       unless workflow.workflow_status_id == 0
-        @statuses.push(Status.find(WorkflowStatus.find(workflow.workflow_status_id).status_id))
-        @temparray.push(workflow.old_status_id)
+        status = Status.find(WorkflowStatus.find(workflow.workflow_status_id).status_id)
+        if status.name == "Closed"
+           @last_status.push(status)
+           @temparray.push(workflow.old_status_id)
+        else  
+          @statuses.push(status)
+          @temparray.push(workflow.old_status_id)
+        end              
       end
-    end
-    #@statuses     = Type.find(Task.type).statuses
+    end  
+     @statuses = @statuses + @last_status
      @sprint = KanbanBoard.find params[:sprint_id]
 
     # @story_ids    = @sprint.stories(@project).map(&:id)

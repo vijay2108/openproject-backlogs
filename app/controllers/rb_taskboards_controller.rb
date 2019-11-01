@@ -50,6 +50,14 @@ class RbTaskboardsController < RbApplicationController
     @workflow_informations = WorkflowInformation.where(id: @kanban_boards.collect(&:wi_id))
     @workflow_status = WorkflowStatus.where( wi_id: @workflow_informations.collect(&:id))
     @statuses = Status.where(id: @workflow_status.collect(&:status_id).uniq)
+    # debugger
+    # if @statuses.present?
+    # @last_st = @statuses.where(name: "sddsd")
+    # index_at =@statuses.find_index{ |el| el["name"] == "sddsd" }
+    # @statuses.to_a.delete_at(index_at)
+    # debugger
+    # @statuses  = (@statuses + @last_st).flatten
+    # end
     # @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
     @temparray = []
     # @workflow_status.each do |workflow_status|
