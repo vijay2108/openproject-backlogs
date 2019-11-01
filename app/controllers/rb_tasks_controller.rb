@@ -65,8 +65,8 @@ class RbTasksController < RbApplicationController
   end
 
   def update_task
-
-    @task = Task.find(task_params[:id])
+     @task = Task.find(task_params[:id])
+      @task = Task.find(params[:parent_id]) if params[:parent_id].present?
        task_params_new  =@task.kanban_board.present? ?  task_params.except(:sprint_id) : task_params
        @time_entry = new_time_entry(@project,WorkPackage.find(@task.id), {hours: params[:log_hour].present? ? params[:log_hour] : 0})
        if @time_entry.save

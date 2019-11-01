@@ -53,12 +53,18 @@ class RbApplicationController < ApplicationController
       if params[:sprint_id].present?
 
       @sprint = KanbanBoard.find(@sprint_id)
-    end
+      end
 
     elsif params[:action] == "check_transition"
-      
+      @task = Task.find params[:parent_id]
+      if @task.kanban_board.present?
+      @sprint_id = @task.kanban_board_id
+      @sprint = KanbanBoard.find(@task.kanban_board_id)
+      end
     elsif params[:action] == "update" || params[:action] == "update_task" 
+       
        @task = WorkPackage.find(params[:id])
+       @task = Task.find(params[:parent_id]) if params[:parent_id].present?
       if @task.kanban_board.present?
         @sprint_id = params[:kanban_board_id]
         @sprint = KanbanBoard.find(@sprint_id)
