@@ -48,14 +48,14 @@ See doc/COPYRIGHT.rdoc for more details.
 
   <% if managable %>
     <li class="toolbar-item">
-      <%= link_to "#",
-                  { class: 'button -alt-highlight',
-                    id: 'new_news_link',
-                    aria: {label: t(:label_news_new)},
-                    title: t(:label_news_new),
-                    onclick: 'jQuery("#kanban-side-panel").addClass("offcanvas-open");'} do %>
+      <a href="#"
+         data-target="kanban-modal"         
+         title="<%= I18n.t(:label_news_new) %>"
+         arial-label="<%= I18n.t(:label_news_new) %>"
+         class="button -alt-highlight first-modal">
         <%= op_icon('button--icon icon-add') %>
         <span class="button--text"><%= t(:label_new_kanban) %></span>
+      </a>
       <% end %>
     </li>
   <% end %>
@@ -73,7 +73,7 @@ See doc/COPYRIGHT.rdoc for more details.
   <div id="taskboard" class="wp-work-wrapper">
     <div id="wp-work" class="wp-work" style="height: 330px;">
       <div id="wp-pool-column">
-        <div id="wp-pool" style="display: block; padding-top: 36px;">
+        <div id="wp-pool" style="display: block; padding-top: 42px;">
           <div id="wp-column-header-group" class="wp-column-header-group wp-fixed">
             <ul id="wp-column-headers" class="wp-column-headers">
               <% @statuses.each do |status| %>
@@ -165,7 +165,7 @@ See doc/COPYRIGHT.rdoc for more details.
 </div>
 
 
-<div id="new-kanban-side-panel" class="new-kanban aside-panel-outer">
+<div id="kanban-modal" class="new-kanban aside-panel-outer">
   <div class="aside-panel aside-panel-first">
     <div class="aside-content px-30">
       <div class="aside-header d-flex justify-content-between align-items-center">
