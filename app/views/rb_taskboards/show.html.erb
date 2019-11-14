@@ -66,8 +66,7 @@ See doc/COPYRIGHT.rdoc for more details.
 <% end %>
 
 <% breadcrumb_paths(link_to(l(:label_backlogs), backlogs_project_backlogs_path(@project)), link_to(@sprint.name, backlogs_project_backlogs_path(@sprint))) %>
-
-<% if params[:controller] == "rb_taskboards" %>
+<% if !@project.kanban_boards.present? %>
 <script type="text/javascript">
 
 RB.Taskboard = (function ($) {
@@ -437,7 +436,7 @@ RB.Taskboard = (function ($) {
       </div>
       <div class="aside-body create-news py-20">
         <p class="mb-20">Select the workflow where the Kanban belongs.</p>
-        <%= labelled_tabular_form_for [@project, @kanban_board], html: { id: 'kanban-form' } do |f| %>
+        <%= labelled_tabular_form_for [@project, @project.kanban_boards.new], html: { id: 'kanban-form' } do |f| %>
           <%= render partial: 'kanban_boards/form', locals: { f: f } %>
           <div class="aside-footer text-right">
             <%= styled_button_tag l(:button_cancel), class: 'button -light-gray close-panel-btn' %>

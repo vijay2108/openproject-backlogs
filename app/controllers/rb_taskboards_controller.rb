@@ -39,7 +39,7 @@ class RbTaskboardsController < RbApplicationController
   helper :taskboards
 
   def show
-  	if params[:controller] == "rb_taskboards"
+  	if !@project.kanban_boards.present?
  
   		    @currentworkflow = ProjectWorkflow.find_by(project_id: @project.id)
   		    if @currentworkflow
@@ -47,7 +47,7 @@ class RbTaskboardsController < RbApplicationController
   		    else
   		      @selectedworkflow = 3
   		    end
-  		    @kanban_board = @project.kanban_boards.new
+  		    # @kanban_board = @project.kanban_boards.new
   		    @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
   		    @statuses = []
   		    @temparray = []
