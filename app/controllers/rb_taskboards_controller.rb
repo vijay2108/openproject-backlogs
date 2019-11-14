@@ -39,6 +39,31 @@ class RbTaskboardsController < RbApplicationController
   helper :taskboards
 
   def show
+  	if params[:controller] == "rb_taskboards"
+ 
+  		    @currentworkflow = ProjectWorkflow.find_by(project_id: @project.id)
+  		    if @currentworkflow
+  		      @selectedworkflow = @currentworkflow.wi_id
+  		    else
+  		      @selectedworkflow = 0
+  		    end
+  		    @kanban_board = @project.kanban_boards.new
+  		    @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
+  		    @statuses = []
+  		    @temparray = []
+  		    @workflows.each do |workflow|
+  		      if !@temparray.include?(workflow.old_status_id)
+  		        @statuses.push(Status.find(workflow.old_status_id))
+  		        @temparray.push(workflow.old_status_id)
+  		      end
+  		    end
+  		    #@statuses     = Type.find(Task.type).statuses
+  		    @story_ids    = @sprint.stories(@project).map(&:id)
+  		    @last_updated = Task.where(parent_id: @story_ids)
+  		                        .order('updated_at DESC')
+  		                        .first
+
+    else		
     @currentworkflow = ProjectWorkflow.find_by(project_id: @project.id)
     if @currentworkflow
       @selectedworkflow = @currentworkflow.wi_id
@@ -76,6 +101,7 @@ class RbTaskboardsController < RbApplicationController
     # @last_updated = Task.where(parent_id: @story_ids)
     #                     .order('updated_at DESC')
     #                     .first
+    end
   end
 
   def default_breadcrumb
