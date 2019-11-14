@@ -66,6 +66,7 @@ class RbTasksController < RbApplicationController
 
   def update_task
      @task = Task.find(task_params[:id])
+     if @task.kanban_board.present?
       @task = Task.find(params[:parent_id]) if params[:parent_id].present?
        task_params_new  =@task.kanban_board.present? ?  task_params.except(:sprint_id) : task_params
        @time_entry = new_time_entry(@project,WorkPackage.find(@task.id), {hours: params[:log_hour].present? ? params[:log_hour] : 0})
@@ -79,7 +80,17 @@ class RbTasksController < RbApplicationController
 
     # TimelogController.save_time_entry_and_respond @time_entry
        @include_meta = true
-       respond_to do |format|
+     else
+     	@task = Task.find(task_params[:id])
+   # task_params_new  = @task_params[]
+    task_params_new = task_params
+    task_params_new[:sprint_id] = params[:kanban_board_id]
+    result = @task.update_with_relationships(task_params_new)
+    status = (result ? 200 : 400)
+    @include_meta = true
+     
+     end  
+      respond_to do |format|
          format.html { render partial: 'task', object: @task, status: status }
        end
   end  
@@ -87,22 +98,29 @@ class RbTasksController < RbApplicationController
 
   def check_transition
     @t  =Task.find params[:parent_id]
-    @kanban_board =  KanbanBoard.find @t.kanban_board_id
-    from = WorkflowStatus.find_by_status_id_and_wi_id(@t.status_id, @kanban_board.wi_id)
-    to =  WorkflowStatus.find_by_status_id_and_wi_id(params[:status_id], @kanban_board.wi_id)
-    @workflowInformation = WorkflowInformation.find @kanban_board.wi_id 
-    @workfow_transition = WorkflowTransition.where(from_workflow_status_id: from.id , to_workflow_status_id: to.id)
-    respond_to do |format|
-      if @workfow_transition.present? 
-        if @workfow_transition.last.is_log_hours==true
-         format.json {render :json => {:success => true } }
-        else
+    if @t.kanban_board.present?
+	    @kanban_board =  KanbanBoard.find @t.kanban_board_id
+	    from = WorkflowStatus.find_by_status_id_and_wi_id(@t.status_id, @kanban_board.wi_id)
+	    to =  WorkflowStatus.find_by_status_id_and_wi_id(params[:status_id], @kanban_board.wi_id)
+	    @workflowInformation = WorkflowInformation.find @kanban_board.wi_id 
+	    @workfow_transition = WorkflowTransition.where(from_workflow_status_id: from.id , to_workflow_status_id: to.id)
+	    respond_to do |format|
+	      if @workfow_transition.present? 
+	        if @workfow_transition.last.is_log_hours==true
+	         format.json {render :json => {:success => true } }
+	        else
+	          format.json {render :json => {:success => false } }
+	        end  
+	      else
+	        format.json {render :json => {:success => false } }
+	      end  
+	    end
+	else
+	   respond_to do |format|
           format.json {render :json => {:success => false } }
-        end  
-      else
-        format.json {render :json => {:success => false } }
-      end  
-    end
+	   end	
+	end
+
   end 
 
   

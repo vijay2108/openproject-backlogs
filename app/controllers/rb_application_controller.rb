@@ -46,6 +46,7 @@ class RbApplicationController < ApplicationController
   # Loads the project to be used by the authorize filter to determine if
   # User.current has permission to invoke the method in question.
   def load_sprint_and_project
+  	
     # because of strong params, we want to pluck this variable out right now,
     # otherwise it causes issues where we are doing `attributes=`.
     if params[:controller] == "rb_kanban_boards"
@@ -69,12 +70,12 @@ class RbApplicationController < ApplicationController
         @sprint_id = params[:kanban_board_id]
         @sprint = KanbanBoard.find(@sprint_id)
       else
-        @sprint_id = params[:sprint_id]
+        @sprint_id = params[:sprint_id] || params[:kanban_board_id]
         @sprint = Sprint.find(@sprint_id)
         @project = @sprint.project
       end
     else
-      @sprint_id = params[:sprint_id]
+      @sprint_id = params[:kanban_board_id] || params[:sprint_id]
       @sprint = Sprint.find(@sprint_id)
       @project = @sprint.project
     end
