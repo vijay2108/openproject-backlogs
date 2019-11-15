@@ -498,6 +498,9 @@ RB.Model = (function ($) {
         }
       });
       jQuery(".log-hour-done").click(function(){
+      	
+      	if (Number.isInteger(parseInt(jQuery(".log_hours").val()))){
+
       saveDir.data += "&log_hour=" + jQuery(".log_hours").val()
       RB.ajax({
         type: "POST",
@@ -512,6 +515,12 @@ RB.Model = (function ($) {
           self.error(x, t, e);
         }
       });
+
+      	}
+      	else{
+           alert("Log Hour is Mandatory ");
+
+      	}
     });
       self.endEdit();
     },
