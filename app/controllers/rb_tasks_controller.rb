@@ -81,15 +81,21 @@ class RbTasksController < RbApplicationController
     # TimelogController.save_time_entry_and_respond @time_entry
        @include_meta = true
      else
-     	@task = Task.find(task_params[:id])
+     @task = Task.find(task_params[:id])
+      @time_entry = new_time_entry(@project,WorkPackage.find(@task.id), {hours: params[:log_hour].present? ? params[:log_hour] : 0})
+       if @time_entry.save
+
    # task_params_new  = @task_params[]
-    task_params_new = task_params
-    task_params_new[:sprint_id] = params[:kanban_board_id]
-    result = @task.update_with_relationships(task_params_new)
-    status = (result ? 200 : 400)
-    @include_meta = true
-     
-     end  
+	    task_params_new = task_params
+	    task_params_new[:sprint_id] = params[:kanban_board_id]
+	    result = @task.update_with_relationships(task_params_new)
+	    status = (result ? 200 : 400)
+	    @include_meta = true
+       else
+         status = 400 
+
+      end 	
+    end  
       respond_to do |format|
          format.html { render partial: 'task', object: @task, status: status }
        end
@@ -117,7 +123,7 @@ class RbTasksController < RbApplicationController
 	    end
 	else
 	   respond_to do |format|
-          format.json {render :json => {:success => false } }
+          format.json {render :json => {:success => true } }
 	   end	
 	end
 
