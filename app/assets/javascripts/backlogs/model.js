@@ -470,48 +470,53 @@ RB.Model = (function ($) {
       self.unmarkError();
       self.markSaving();
 
-      RB.ajax({
+    RB.ajax({
         type: "GET",
         url: "/rb_tasks/check_transition",
         data: saveDir.data,
         success   : function (d) {
-          if (d.success == true){
-            $(".logwork-modal").show();
-          }
-          else{
-  RB.ajax({
-        type: "POST",
-        url: saveDir.url,
-        data: saveDir.data,
-        success   : function (d, t, x) {
-          jQuery(".logwork-modal").hide();
-          self.afterSave(d, t, x);
-        },
-        error     : function (x, t, e) {
-          jQuery(".logwork-modal").hide();
-          self.error(x, t, e);
-        }
-      });          } 
+            if (d.success == true){
+                $(".logwork-modal").show();
+            }
+            else{
+                RB.ajax({
+                    type: "POST",
+                    url: saveDir.url,
+                    data: saveDir.data,
+                    success   : function (d, t, x) {
+                        jQuery(".logwork-modal").hide();
+                        self.afterSave(d, t, x);
+                    },
+                    error     : function (x, t, e) {
+                        jQuery(".logwork-modal").hide();
+                        self.error(x, t, e);
+                    }
+                });          }
         },
         error     : function (x) {
-          $(".logwork-modal").hide();
+            $(".logwork-modal").hide();
         }
-      });
-      jQuery(".log-hour-done").click(function(){
-      saveDir.data += "&log_hour=" + jQuery(".log_hours").val()
-      RB.ajax({
-        type: "POST",
-        url: saveDir.url,
-        data: saveDir.data,
-        success   : function (d, t, x) {
-          jQuery(".logwork-modal").hide();
-          self.afterSave(d, t, x);
-        },
-        error     : function (x, t, e) {
-          jQuery(".logwork-modal").hide();
-          self.error(x, t, e);
+    });
+    jQuery(".log-hour-done").click(function(){
+        if (Number.isInteger(parseInt(jQuery(".log_hours").val()))){
+            saveDir.data += "&log_hour=" + jQuery(".log_hours").val()
+            RB.ajax({
+                type: "POST",
+                url: saveDir.url,
+                data: saveDir.data,
+                success   : function (d, t, x) {
+                    jQuery(".logwork-modal").hide();
+                    self.afterSave(d, t, x);
+                },
+                error     : function (x, t, e) {
+                    jQuery(".logwork-modal").hide();
+                    self.error(x, t, e);
+                }
+            });
         }
-      });
+        else{
+            alert("Log hour is Mandatory");
+        }
     });
       self.endEdit();
     },
