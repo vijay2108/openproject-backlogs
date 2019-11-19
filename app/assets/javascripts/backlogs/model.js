@@ -491,12 +491,12 @@ RB.Model = (function ($) {
                         jQuery(".logwork-modal").hide();
                         self.error(x, t, e);
                     }
-                });          }
+                });
+            }
         },
         error     : function (x) {
             $(".logwork-modal").hide();
         }
-<<<<<<< HEAD
       });
       jQuery(".log-hour-done").click(function(){
       	
