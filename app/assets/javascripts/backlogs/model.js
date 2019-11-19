@@ -470,32 +470,33 @@ RB.Model = (function ($) {
       self.unmarkError();
       self.markSaving();
 
-      RB.ajax({
+    RB.ajax({
         type: "GET",
         url: "/rb_tasks/check_transition",
         data: saveDir.data,
         success   : function (d) {
-          if (d.success == true){
-            $(".logwork-modal").show();
-          }
-          else{
-  RB.ajax({
-        type: "POST",
-        url: saveDir.url,
-        data: saveDir.data,
-        success   : function (d, t, x) {
-          jQuery(".logwork-modal").hide();
-          self.afterSave(d, t, x);
-        },
-        error     : function (x, t, e) {
-          jQuery(".logwork-modal").hide();
-          self.error(x, t, e);
-        }
-      });          } 
+            if (d.success == true){
+                $(".logwork-modal").show();
+            }
+            else{
+                RB.ajax({
+                    type: "POST",
+                    url: saveDir.url,
+                    data: saveDir.data,
+                    success   : function (d, t, x) {
+                        jQuery(".logwork-modal").hide();
+                        self.afterSave(d, t, x);
+                    },
+                    error     : function (x, t, e) {
+                        jQuery(".logwork-modal").hide();
+                        self.error(x, t, e);
+                    }
+                });          }
         },
         error     : function (x) {
-          $(".logwork-modal").hide();
+            $(".logwork-modal").hide();
         }
+<<<<<<< HEAD
       });
       jQuery(".log-hour-done").click(function(){
       	
