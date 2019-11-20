@@ -283,39 +283,39 @@ module RbCommonHelper
 
   def task_type_icon(task)
     if task.type_id == 1
-      return "type_icons/task.png"
+      return image_tag "type_icons/task.png"
     elsif task.type_id == 2
-      return "type_icons/milestone.png"
+      return image_tag "type_icons/milestone.png"
     elsif task.type_id == 3
-      return "type_icons/phase.png"
+      return image_tag "type_icons/phase.png"
     elsif task.type_id == 4
-      return "type_icons/feature.png"
+      return image_tag "type_icons/feature.png"
     elsif task.type_id == 5
-      return "type_icons/epic.png"
+      return image_tag "type_icons/epic.png"
     elsif task.type_id == 6
-      return "type_icons/user-story.png"
+      return image_tag "type_icons/user-story.png"
     elsif task.type_id == 7
-      return "type_icons/bug.png"
+      return image_tag "type_icons/bug.png"
     elsif task.type_id == 8
-      return "type_icons/task.png"
+      return image_tag "type_icons/task.png"
     elsif task.type_id == 9
-      return "type_icons/wishlist.png"
+      return image_tag "type_icons/wishlist.png"
     else
-      return "type_icons/task.png"
+      return image_tag "type_icons/task.png"
     end
   end
 
   def task_priority_icon(task)
     if task.priority_id == 7
-      return "priority_icons/minor.png"
+      return image_tag "priority_icons/minor.png"
     elsif task.priority_id == 8
-      return "priority_icons/trivial.png"
+      return image_tag "priority_icons/trivial.png"
     elsif task.priority_id == 9
-      return "priority_icons/major.png"
+      return image_tag "priority_icons/major.png"
     elsif task.priority_id == 10
-      return "priority_icons/critical.png"
+      return image_tag "priority_icons/critical.png"
     else
-      return "priority_icons/trivial.png"
+      return image_tag "priority_icons/trivial.png"
     end
   end
 end
