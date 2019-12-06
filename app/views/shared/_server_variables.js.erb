@@ -46,10 +46,10 @@ RB.i18n = {
 
 RB.urlFor = (function () {
   var routes = {
-    update_sprint: '<%= backlogs_project_sprint_path(:project_id => @project.identifier, :id => ":id") %>',
+    update_sprint: '<%= backlogs_project_sprint_path(:project_id => @project.identifier, :id => ":id",:type => "story") %>',
 
     create_story: '<%= backlogs_project_sprint_stories_path(:project_id => @project.identifier, :sprint_id => ":sprint_id") %>',
-    update_story: '<%= backlogs_project_sprint_story_path(:project_id => @project.identifier, :sprint_id => ":sprint_id", :id => ":id") %>',
+    update_story: '<%= backlogs_project_sprint_story_path(:project_id => @project.identifier, :sprint_id => ":sprint_id", :id => ":id", :type=> "story") %>',
 
     create_task: '<%= backlogs_project_sprint_tasks_path(:project_id => @project.identifier, :sprint_id => ":sprint_id") %>',
     update_task: '<%= update_task_backlogs_project_kanban_board_task_path(:project_id => @project.identifier, :kanban_board_id => ":sprint_id", :id => ":id") %>',

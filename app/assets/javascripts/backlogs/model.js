@@ -466,38 +466,55 @@ RB.Model = (function ($) {
       // Get the save directives.
       saveDir = self.saveDirectives();
       self.beforeSave();
-
       self.unmarkError();
       self.markSaving();
+      if (saveDir.url.split("type=")[1] == "story"){
+     RB.ajax({
+       type: "POST",
+       url: saveDir.url,
+       data: saveDir.data,
+       success   : function (d, t, x) {
+         self.afterSave(d, t, x);
+       },
+       error     : function (x, t, e) {
+         self.error(x, t, e);
+       }
+     });
 
-    RB.ajax({
-        type: "GET",
-        url: "/rb_tasks/check_transition",
-        data: saveDir.data,
-        success   : function (d) {
-            if (d.success == true){
-                $(".logwork-modal").show();
-            }
-            else{
-                RB.ajax({
-                    type: "POST",
-                    url: saveDir.url,
-                    data: saveDir.data,
-                    success   : function (d, t, x) {
-                        jQuery(".logwork-modal").hide();
-                        self.afterSave(d, t, x);
-                    },
-                    error     : function (x, t, e) {
-                        jQuery(".logwork-modal").hide();
-                        self.error(x, t, e);
-                    }
-                });
-            }
-        },
-        error     : function (x) {
-            $(".logwork-modal").hide();
-        }
-      });
+      }
+   else  {
+
+  RB.ajax({
+      type: "GET",
+      url: "/rb_tasks/check_transition",
+      data: saveDir.data,
+      success   : function (d) {
+          if (d.success == true){
+              $(".logwork-modal").show();
+          }
+          else{
+              RB.ajax({
+                  type: "POST",
+                  url: saveDir.url,
+                  data: saveDir.data,
+                  success   : function (d, t, x) {
+                      jQuery(".logwork-modal").hide();
+                      self.afterSave(d, t, x);
+                  },
+                  error     : function (x, t, e) {
+                      jQuery(".logwork-modal").hide();
+                      self.error(x, t, e);
+                  }
+              });
+          }
+      },
+      error     : function (x) {
+          $(".logwork-modal").hide();
+      }
+    });
+
+   }
+
       jQuery(".log-hour-done").click(function(){
       	
       	if (Number.isInteger(parseInt(jQuery(".log_hours").val()))){

@@ -56,10 +56,11 @@ class RbStoriesController < RbApplicationController
     end
   end
 
+
   def update
     story = Story.find(params[:id])
     prev = params.delete('prev')
-    result = story.update_and_position!(story_params, @project, prev)
+    result = story.update_and_position!(story_params.except("sprint_id"), @project, prev)
     story.reload
     status = (result ? 200 : 400)
 
