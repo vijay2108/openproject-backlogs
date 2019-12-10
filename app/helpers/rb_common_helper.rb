@@ -318,4 +318,18 @@ module RbCommonHelper
       return "priority_icons/trivial.png"
     end
   end
+
+  def task_priority_wp_border(task)
+    if task.priority_id == 7
+      return 'priority-low'
+    elsif task.priority_id == 8
+      return 'priority-normal'
+    elsif task.priority_id == 9
+      return 'priority-high'
+    elsif task.priority_id == 10
+      return 'priority-high'
+    else
+      return 'priority-normal'
+    end
+  end
 end
