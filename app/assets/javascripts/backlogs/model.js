@@ -516,10 +516,21 @@ RB.Model = (function ($) {
    }
 
       jQuery(".log-hour-done").click(function(){
-      	
-      	if (Number.isInteger(parseInt(jQuery(".log_hours").val()))){
 
-      saveDir.data += "&log_hour=" + jQuery(".log_hours").val()
+       if (Number.isInteger(parseInt(jQuery(".log_hours").val())) && Number.isInteger(parseInt(jQuery(".log_minutes").val()))){
+          var log_hours_mins = jQuery(".log_hours").val() * 60;
+          var log_minutes_mins = jQuery(".log_minutes").val();
+          var total_mins = +log_hours_mins + +log_minutes_mins;
+          function timeConvert(mins) {
+              var num = mins;
+              var hours = (num / 60);
+              var rhours = Math.floor(hours);
+              var minutes = (hours - rhours) * 60;
+              var rminutes = minutes/100;
+              return (+rhours + +rminutes)
+          }
+      //saveDir.data += "&log_hour=" + jQuery(".log_hours").val()
+      saveDir.data += "&log_hour=" + timeConvert(total_mins);
       RB.ajax({
         type: "POST",
         url: saveDir.url,
