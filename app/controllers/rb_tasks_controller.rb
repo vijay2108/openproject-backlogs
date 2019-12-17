@@ -65,12 +65,7 @@ class RbTasksController < RbApplicationController
   end
 
   def update_task
-     #@task = Task.find(task_params[:id])
-     begin
-       @task = Task.find(task_params[:id])
-     rescue ActiveRecord::RecordNotFound => e
-       @task = Task.find(task_params[:parent_id])
-     end
+     @task = Task.find(task_params[:id])
      if @task.kanban_board.present?
       @task = Task.find(params[:parent_id]) if params[:parent_id].present?
        task_params_new  =@task.kanban_board.present? ?  task_params.except(:sprint_id) : task_params
@@ -86,7 +81,7 @@ class RbTasksController < RbApplicationController
     # TimelogController.save_time_entry_and_respond @time_entry
        @include_meta = true
      else
-       #@task = Task.find(task_params[:id])
+     @task = Task.find(task_params[:id])
       @time_entry = new_time_entry(@project,WorkPackage.find(@task.id), {hours: params[:log_hour].present? ? params[:log_hour] : 0})
        if @time_entry.save
 
