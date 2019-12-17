@@ -86,7 +86,7 @@ class RbTasksController < RbApplicationController
     # TimelogController.save_time_entry_and_respond @time_entry
        @include_meta = true
      else
-     @task = Task.find(task_params[:id])
+       #@task = Task.find(task_params[:id])
       @time_entry = new_time_entry(@project,WorkPackage.find(@task.id), {hours: params[:log_hour].present? ? params[:log_hour] : 0})
        if @time_entry.save
 
