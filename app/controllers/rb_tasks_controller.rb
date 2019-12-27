@@ -66,11 +66,13 @@ class RbTasksController < RbApplicationController
 
   def update_task
     #@task = Task.find(task_params[:id])
-     begin
-       @task = Task.find(task_params[:id])
-     rescue ActiveRecord::RecordNotFound => e
-       @task = Task.find(task_params[:parent_id])
-     end
+
+    if @project.project_type.name == "Standard project"
+      @task = Task.find(task_params[:parent_id])
+    elsif @project.project_type.name == "Scrum project"
+      @task = Task.find(task_params[:id])
+    end
+
      if @task.kanban_board.present?
       @task = Task.find(params[:parent_id]) if params[:parent_id].present?
        task_params_new  =@task.kanban_board.present? ?  task_params.except(:sprint_id) : task_params

@@ -65,6 +65,7 @@ class RbApplicationController < ApplicationController
       if params[:action] == "update"
         @task = WorkPackage.find(params[:id]) if params[:id].present?
       elsif params[:action] == "update_task"
+        @project = Project.find_by_identifier(params[:project_id])
         @task = Task.find(params[:parent_id]) if params[:parent_id].present?
       end
       if @task.kanban_board.present?
