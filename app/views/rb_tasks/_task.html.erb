@@ -37,7 +37,8 @@ See doc/COPYRIGHT.rdoc for more details.
 <% prevent_edit = User.current.allowed_to?(:update_tasks, defined?(project) ? project : task.project) ? '' : 'prevent_edit'%>
 <div class="model work_package task <%= color_contrast_class(task) %> <%= prevent_edit %> <%= mark_if_closed(task) %> <%= task_priority_wp_border(task) %>" id="work_package_<%= task.id %>" <%= build_inline_style(task) %>>
   <div class="d-flex align-items-center mb-5">
-    <span class="status status-<%= task.status.name.split.join("-").downcase %>"><%= task.status.name %></span>
+<!--    <span class="status status-<%#= task.status.name.split.join("-").downcase %>"><%#= task.status.name %></span>-->
+    <span class="status status-<%= task.status.present? ? task.status.name.split.join("-").downcase : '' %>"><%= task.status.present? ? task.status.name : '' %></span>
     <div class="task_type ml-auto"><%= image_tag task_type_icon(task)%></div>
     <div class="task_priority ml-5"><%= image_tag task_priority_icon(task)%></div>
   </div>
