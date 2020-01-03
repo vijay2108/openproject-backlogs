@@ -70,7 +70,14 @@ class RbTasksController < RbApplicationController
     if @project.project_type.name == "Standard project"
       @task = Task.find(task_params[:parent_id])
     elsif @project.project_type.name == "Scrum project"
-      @task = Task.find(task_params[:id])
+      #@task = Task.find(task_params[:id])
+      if task_params[:id].size == 4
+        task_id = task_params[:id] + '0'
+      else
+        task_id = task_params[:id]
+      end
+      #@task = Task.find(task_params[:id])
+      @task = Task.find(task_id)
     end
 
      if @task.kanban_board.present?
