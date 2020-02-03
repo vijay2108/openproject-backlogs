@@ -68,7 +68,15 @@ class RbTasksController < RbApplicationController
     #@task = Task.find(task_params[:id])
 
     if @project.project_type.name == "Standard project"
-      @task = Task.find(task_params[:parent_id])
+      #@task = Task.find(task_params[:parent_id])
+      if task_params[:parent_id].size == 4 && task_params[:parent_id][2] == '0' && task_params[:id].size == 3
+        task_id = task_params[:id].insert(2, '0')
+      elsif task_params[:parent_id].size == 3 && task_params[:parent_id][2] == '9' && task_params[:id].size == 2
+        task_id = task_params[:id] + '0'
+      elsif
+        task_id = task_params[:id]
+      end
+      @task = Task.find(task_id)
     elsif @project.project_type.name == "Scrum project"
       #@task = Task.find(task_params[:id])
       if task_params[:id].size == 4
