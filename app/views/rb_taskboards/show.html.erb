@@ -374,8 +374,13 @@ RB.Taskboard = (function ($) {
 
                       <li class="wp-column swimlane list <%= status.is_closed? ? 'closed' : '' %>" id="<%= story.id %>_<%= status.id %>">
                         <% if story.status.id == status.id%>
-                          <%= render :partial => "rb_tasks/task",
-                                     :locals => { :task => story}  %>
+                          <% if @project.project_type.name == "W-Suite project" %>
+                            <%= render :partial => "rb_tasks/wsuite_task",
+                                       :locals => { :task => story}  %>
+                          <% else %>
+                            <%= render :partial => "rb_tasks/task",
+                                       :locals => { :task => story}  %>
+                          <% end %>
                         <% end %>
                       </li>
 
