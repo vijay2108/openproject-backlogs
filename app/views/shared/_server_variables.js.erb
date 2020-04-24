@@ -66,7 +66,7 @@ RB.urlFor = (function () {
 
     if (options){
       if (options.id) {
-        route = route.replace(":id", options.id.replace(/[^a-zA-Z1-9 ]/g, ""));
+        route = route.replace(":id", options.id.replace(/[^a-zA-Z0-9 ]/g, ""));
       }
       if (options.project_id){
         route = route.replace(":project_id", options.project_id);
