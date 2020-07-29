@@ -28,8 +28,11 @@ class RbKanbanBoardsController < RbApplicationController
     @temparray = []
     @workflows.each do |workflow|
       unless workflow.workflow_status_id == 0
-        wf_status = WorkflowStatus.find(workflow.workflow_status_id)
-        if !wf_status.present?
+        wf_status = WorkflowStatus.find_by(id: workflow.workflow_status_id)
+        p "++++++++++ WF STATUS ++++++++++++++++++++++++++++++"
+        p wf_status
+        p "++++++++++ WF STATUS ++++++++++++++++++++++++++++++"
+        if wf_status.nil?
 
           # Delete al existing Workflows because of Wrong ID
           Workflow.where(wi_id: @selectedworkflow).delete_all
