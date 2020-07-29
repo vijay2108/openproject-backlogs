@@ -28,6 +28,71 @@ class RbKanbanBoardsController < RbApplicationController
     @temparray = []
     @workflows.each do |workflow|
       unless workflow.workflow_status_id == 0
+        wf_status = WorkflowStatus.find(workflow.workflow_status_id)
+        if !wf_status.present?
+
+          # Delete al existing Workflows because of Wrong ID
+          Workflow.where(wi_id: @selectedworkflow).delete_all
+
+          # Get all Workflow Status from Workflow Status Table
+          wf_statuses = WorkflowStatus.where(wi_id: @selectedworkflow)
+
+          wf_statuses.each do |status|
+            type_id = Type.find_by_name('Task').id
+            role_id = Role.find_by_name('Member').id
+
+            Workflow.create!(
+                type_id: type_id,
+                old_status_id: status.status_id,
+                new_status_id: status.status_id,
+                role_id: role_id,
+                wi_id: @selectedworkflow,
+                workflow_status_id: status.id
+            )
+          end
+
+          status_ids = WorkflowStatus.where(wi_id: @selectedworkflow).pluck(:status_id)
+
+          all_transitions = status_ids.permutation(2).to_a
+          last_status_id = status_ids.pop.split(',')
+
+          new_status_ids = status_ids - last_status_id
+          last_element_transitions = last_status_id.product(new_status_ids)
+
+          final_transitions = all_transitions - last_element_transitions
+
+          ## Create Workflow Transition based on Transitions Collections
+          final_transitions.each do |transition|
+            roles = ["Member", "Admin", "Project admin", "Reader"]
+            first_transition_id = transition[0]
+            second_transition_id = transition[1]
+            from_status = Status.find(first_transition_id).name
+            to_status = Status.find(second_transition_id).name
+            from_workflow_status_id = WorkflowStatus.find_by(name: from_status, wi_id: @selectedworkflow).id
+            to_workflow_status_id = WorkflowStatus.find_by(name: to_status, wi_id: @selectedworkflow).id
+            is_log_hours = status_ids.index(first_transition_id) < status_ids.index(second_transition_id) ? 1 : 0
+
+            WorkflowTransition.create!(
+                from_workflow_status_id: from_workflow_status_id,
+                to_workflow_status_id: to_workflow_status_id,
+                is_log_hours: is_log_hours
+            )
+
+            workflow_transition_id = WorkflowTransition.find_by(from_workflow_status_id: from_workflow_status_id, to_workflow_status_id: to_workflow_status_id).id
+
+
+            ## Create Transition Role for every Workflow Transition
+            roles.each do |role|
+              role_id = Role.find_or_create_by(name: role).id
+              TransitionRole.create!(
+                  role_id: role_id,
+                  log_hours: 1,
+                  workflow_transition_id: workflow_transition_id
+              )
+            end
+          end
+        end
+        sleep 1
         status = Status.find(WorkflowStatus.find(workflow.workflow_status_id).status_id)
         if status.name == "Closed"
            @last_status.push(status)
