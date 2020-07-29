@@ -93,8 +93,8 @@ class RbKanbanBoardsController < RbApplicationController
               )
             end
           end
+          redirect_to backlogs_project_sprint_kanban_boards_path(@project.identifier,@sprint.id)
         end
-        sleep 1
         status = Status.find(WorkflowStatus.find(workflow.workflow_status_id).status_id)
         if status.name == "Closed"
            @last_status.push(status)
