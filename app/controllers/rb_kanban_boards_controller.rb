@@ -57,12 +57,11 @@ class RbKanbanBoardsController < RbApplicationController
           status_ids = WorkflowStatus.where(wi_id: @selectedworkflow).pluck(:status_id)
 
           all_transitions = status_ids.permutation(2).to_a
-          last_status_id = status_ids.pop.split(',')
+          (status_ids.size - 1).times do
+            all_transitions.pop
+          end
 
-          new_status_ids = status_ids - last_status_id
-          last_element_transitions = last_status_id.product(new_status_ids)
-
-          final_transitions = all_transitions - last_element_transitions
+          final_transitions = all_transitions
 
           ## Create Workflow Transition based on Transitions Collections
           final_transitions.each do |transition|
