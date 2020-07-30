@@ -26,7 +26,7 @@ class RbKanbanBoardsController < RbApplicationController
     @current_workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
     @current_workflows.each do |workflow|
       unless workflow.workflow_status_id == 0
-        wf_status = WorkflowStatus.find_by(id: workflow.workflow_status_id)
+        wf_status = WorkflowStatus.find_by(id: workflow.workflow_status_id, wi_id: @selectedworkflow)
         p "++++++++++ WF STATUS ++++++++++++++++++++++++++++++"
         p wf_status
         p "++++++++++ WF STATUS ++++++++++++++++++++++++++++++"
