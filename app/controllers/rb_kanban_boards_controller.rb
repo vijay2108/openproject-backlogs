@@ -92,6 +92,7 @@ class RbKanbanBoardsController < RbApplicationController
               )
             end
           end
+          break
         end
       end
     end
