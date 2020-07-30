@@ -22,16 +22,15 @@ class RbKanbanBoardsController < RbApplicationController
       @selectedworkflow = 0
     end
     @workfows_status = WorkflowStatus.where(wi_id: @selectedworkflow)
-   @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
-    @statuses = []
-    @last_status= []
-    @temparray = []
-    @workflows.each do |workflow|
+
+    @current_workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
+    @current_workflows.each do |workflow|
       unless workflow.workflow_status_id == 0
         wf_status = WorkflowStatus.find_by(id: workflow.workflow_status_id)
         p "++++++++++ WF STATUS ++++++++++++++++++++++++++++++"
         p wf_status
         p "++++++++++ WF STATUS ++++++++++++++++++++++++++++++"
+
         if wf_status.nil?
 
           # Delete al existing Workflows because of Wrong ID
@@ -93,8 +92,16 @@ class RbKanbanBoardsController < RbApplicationController
               )
             end
           end
-          redirect_to backlogs_project_sprint_kanban_boards_path(@project.identifier,@sprint.id)
-        else
+        end
+      end
+    end
+
+    @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
+    @statuses = []
+    @last_status= []
+    @temparray = []
+    @workflows.each do |workflow|
+      unless workflow.workflow_status_id == 0
           status = Status.find(WorkflowStatus.find(workflow.workflow_status_id).status_id)
           if status.name == "Closed"
             @last_status.push(status)
@@ -103,7 +110,6 @@ class RbKanbanBoardsController < RbApplicationController
             @statuses.push(status)
             @temparray.push(workflow.old_status_id)
           end
-        end
       end
     end  
      @statuses = @statuses + @last_status
