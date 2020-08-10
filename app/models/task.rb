@@ -72,7 +72,12 @@ class Task < WorkPackage
 
   def status_id=(id)
     super
-    self.remaining_hours = 0 if Status.find(id).is_closed?
+    if Setting.use_default_brand == 1
+      condition = StatusDefault.find(id).is_closed?
+    else
+      condition = Status.find(id).is_closed?
+    end
+    self.remaining_hours = 0 if condition
   end
 
   def update_with_relationships(params, _is_impediment = false)

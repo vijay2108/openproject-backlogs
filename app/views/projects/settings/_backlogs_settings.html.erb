@@ -51,7 +51,11 @@ See doc/COPYRIGHT.rdoc for more details.
               <div class="generic-table--sort-header-outer">
                 <div class="generic-table--sort-header">
                   <span>
-                    <%= Status.model_name.human %>
+                    <% if Setting.use_default_brand == 1 %>
+                      <%= StatusDefault.model_name.human %>
+                    <% else %>
+                      <%= Status.model_name.human %>
+                    <% end %>
                   </span>
                 </div>
               </div>
