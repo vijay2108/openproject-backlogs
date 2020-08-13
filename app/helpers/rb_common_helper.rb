@@ -216,23 +216,13 @@ module RbCommonHelper
   end
 
   def all_workflows
-    if Setting.use_default_brand == 1
-      @all_workflows ||= WorkflowDefault.includes([:new_status, :old_status])
-                             .where(role_id: User.current.roles_for_project(@project).map(&:id),
-                                    type_id: story_types.map(&:id))
-    else
-      @all_workflows ||= Workflow.includes([:new_status, :old_status])
-                             .where(role_id: User.current.roles_for_project(@project).map(&:id),
-                                    type_id: story_types.map(&:id))
-    end
+    @all_workflows ||= Workflow.includes([:new_status, :old_status])
+                       .where(role_id: User.current.roles_for_project(@project).map(&:id),
+                              type_id: story_types.map(&:id))
   end
 
   def all_work_package_status
-    if Setting.use_default_brand == 1
-      @all_work_package_status ||= StatusDefault.order('position ASC')
-    else
-      @all_work_package_status ||= Status.order('position ASC')
-    end
+    @all_work_package_status ||= Status.order('position ASC')
   end
 
   def backlogs_types
