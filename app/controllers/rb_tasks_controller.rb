@@ -128,17 +128,10 @@ class RbTasksController < RbApplicationController
     @t  =Task.find params[:parent_id]
     if @t.kanban_board.present?
 	    @kanban_board =  KanbanBoard.find @t.kanban_board_id
-      if Setting.use_default_brand == 1
-        from = WorkflowStatusDefault.find_by_status_id_and_wi_id(@t.status_id, @kanban_board.wi_id)
-        to =  WorkflowStatusDefault.find_by_status_id_and_wi_id(params[:status_id], @kanban_board.wi_id)
-        @workflowInformation = WorkflowInformationDefault.find @kanban_board.wi_id
-        @workfow_transition = WorkflowTransitionDefault.where(from_workflow_status_id: from.id , to_workflow_status_id: to.id)
-      else
-        from = WorkflowStatus.find_by_status_id_and_wi_id(@t.status_id, @kanban_board.wi_id)
-        to =  WorkflowStatus.find_by_status_id_and_wi_id(params[:status_id], @kanban_board.wi_id)
-        @workflowInformation = WorkflowInformation.find @kanban_board.wi_id
-        @workfow_transition = WorkflowTransition.where(from_workflow_status_id: from.id , to_workflow_status_id: to.id)
-      end
+	    from = WorkflowStatus.find_by_status_id_and_wi_id(@t.status_id, @kanban_board.wi_id)
+	    to =  WorkflowStatus.find_by_status_id_and_wi_id(params[:status_id], @kanban_board.wi_id)
+	    @workflowInformation = WorkflowInformation.find @kanban_board.wi_id
+	    @workfow_transition = WorkflowTransition.where(from_workflow_status_id: from.id , to_workflow_status_id: to.id)
 	    respond_to do |format|
 	      if @workfow_transition.present? 
 	        if @workfow_transition.last.is_log_hours==true

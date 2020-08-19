@@ -48,20 +48,12 @@ class RbTaskboardsController < RbApplicationController
   		      @selectedworkflow = 3
   		    end
   		    # @kanban_board = @project.kanban_boards.new
-          if Setting.use_default_brand == 1
-            @workflows = WorkflowDefault.where(type_id: Task.type, wi_id: @selectedworkflow)
-          else
-            @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
-          end
+  		    @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
   		    @statuses = []
   		    @temparray = []
   		    @workflows.each do |workflow|
   		      if !@temparray.include?(workflow.old_status_id)
-              if Setting.use_default_brand == 1
-                @statuses.push(StatusDefault.find(workflow.old_status_id))
-              else
-                @statuses.push(Status.find(workflow.old_status_id))
-              end
+  		        @statuses.push(Status.find(workflow.old_status_id))
   		        @temparray.push(workflow.old_status_id)
   		      end
   		    end
@@ -80,22 +72,14 @@ class RbTaskboardsController < RbApplicationController
     end
     @kanban_board = @project.kanban_boards.new
     @kanban_boards = @project.kanban_boards
-    if Setting.use_default_brand == 1
-      @workflow_informations = WorkflowInformationDefault.where(id: @kanban_boards.collect(&:wi_id))
-      @workflow_status = WorkflowStatusDefault.where( wi_id: @workflow_informations.collect(&:id))
-    else
-      @workflow_informations = WorkflowInformation.where(id: @kanban_boards.collect(&:wi_id))
-      @workflow_status = WorkflowStatus.where( wi_id: @workflow_informations.collect(&:id))
-    end
+    @workflow_informations = WorkflowInformation.where(id: @kanban_boards.collect(&:wi_id))
+    @workflow_status = WorkflowStatus.where( wi_id: @workflow_informations.collect(&:id))
     # @statuses = Status.where(id: @workflow_status.collect(&:status_id).uniq)
     @statuses = []
     @last_status= []
     @workflow_status.each do |workflow_status|
-        if Setting.use_default_brand == 1
-          status = StatusDefault.find(workflow_status.status_id)
-        else
-          status = Status.find(workflow_status.status_id)
-        end
+
+        status = Status.find(workflow_status.status_id)
         if status.name == "Closed"
            @last_status.push(status)
            # @temparray.push(workflow.old_status_id)
