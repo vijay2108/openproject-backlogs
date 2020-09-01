@@ -30,6 +30,7 @@ class RbKanbanBoardsController < RbApplicationController
         p @workfows_status = WorkflowStatus.where(wi_id: @selectedworkflow)
       end
     else
+      p "--------Inside Else Condition---------"
       @workfows_status = WorkflowStatus.where(wi_id: @selectedworkflow)
     end
     p "************** WORKFLOW STATUS **************************"
