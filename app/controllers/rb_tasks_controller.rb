@@ -129,10 +129,14 @@ class RbTasksController < RbApplicationController
     if @t.kanban_board.present?
 	    @kanban_board =  KanbanBoard.find @t.kanban_board_id
       if Setting.use_default_brand == 1
-        from = WorkflowStatusDefault.find_by_status_id_and_wi_id(@t.status_id, @kanban_board.wi_id)
-        to =  WorkflowStatusDefault.find_by_status_id_and_wi_id(params[:status_id], @kanban_board.wi_id)
-        @workflowInformation = WorkflowInformationDefault.find @kanban_board.wi_id
-        @workfow_transition = WorkflowTransitionDefault.where(from_workflow_status_id: from.id , to_workflow_status_id: to.id)
+        base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
+        default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
+        ActiveRecord::Base.connect_to(default_brand_db) do
+          from = WorkflowStatus.find_by_status_id_and_wi_id(@t.status_id, @kanban_board.wi_id)
+          to =  WorkflowStatus.find_by_status_id_and_wi_id(params[:status_id], @kanban_board.wi_id)
+          @workflowInformation = WorkflowInformation.find @kanban_board.wi_id
+          @workfow_transition = WorkflowTransition.where(from_workflow_status_id: from.id , to_workflow_status_id: to.id)
+        end
       else
         from = WorkflowStatus.find_by_status_id_and_wi_id(@t.status_id, @kanban_board.wi_id)
         to =  WorkflowStatus.find_by_status_id_and_wi_id(params[:status_id], @kanban_board.wi_id)

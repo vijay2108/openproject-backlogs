@@ -73,7 +73,11 @@ class Task < WorkPackage
   def status_id=(id)
     super
     if Setting.use_default_brand == 1
-      condition = StatusDefault.find(id).is_closed?
+      base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
+      default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
+      ActiveRecord::Base.connect_to(default_brand_db) do
+        condition = Status.find(id).is_closed?
+      end
     else
       condition = Status.find(id).is_closed?
     end

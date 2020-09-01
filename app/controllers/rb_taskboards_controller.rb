@@ -49,7 +49,11 @@ class RbTaskboardsController < RbApplicationController
   		    end
   		    # @kanban_board = @project.kanban_boards.new
           if Setting.use_default_brand == 1
-            @workflows = WorkflowDefault.where(type_id: Task.type, wi_id: @selectedworkflow)
+            base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
+            default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
+            ActiveRecord::Base.connect_to(default_brand_db) do
+              @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
+            end
           else
             @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
           end
@@ -58,7 +62,11 @@ class RbTaskboardsController < RbApplicationController
   		    @workflows.each do |workflow|
   		      if !@temparray.include?(workflow.old_status_id)
               if Setting.use_default_brand == 1
-                @statuses.push(StatusDefault.find(workflow.old_status_id))
+                base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
+                default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
+                ActiveRecord::Base.connect_to(default_brand_db) do
+                  @statuses.push(Status.find(workflow.old_status_id))
+                end
               else
                 @statuses.push(Status.find(workflow.old_status_id))
               end
@@ -81,8 +89,12 @@ class RbTaskboardsController < RbApplicationController
     @kanban_board = @project.kanban_boards.new
     @kanban_boards = @project.kanban_boards
     if Setting.use_default_brand == 1
-      @workflow_informations = WorkflowInformationDefault.where(id: @kanban_boards.collect(&:wi_id))
-      @workflow_status = WorkflowStatusDefault.where( wi_id: @workflow_informations.collect(&:id))
+      base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
+      default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
+      ActiveRecord::Base.connect_to(default_brand_db) do
+        @workflow_informations = WorkflowInformation.where(id: @kanban_boards.collect(&:wi_id))
+        @workflow_status = WorkflowStatus.where( wi_id: @workflow_informations.collect(&:id))
+      end
     else
       @workflow_informations = WorkflowInformation.where(id: @kanban_boards.collect(&:wi_id))
       @workflow_status = WorkflowStatus.where( wi_id: @workflow_informations.collect(&:id))
@@ -92,7 +104,11 @@ class RbTaskboardsController < RbApplicationController
     @last_status= []
     @workflow_status.each do |workflow_status|
         if Setting.use_default_brand == 1
-          status = StatusDefault.find(workflow_status.status_id)
+          base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
+          default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
+          ActiveRecord::Base.connect_to(default_brand_db) do
+            status = Status.find(workflow_status.status_id)
+          end
         else
           status = Status.find(workflow_status.status_id)
         end

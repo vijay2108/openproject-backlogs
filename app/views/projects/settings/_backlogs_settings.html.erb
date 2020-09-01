@@ -52,7 +52,11 @@ See doc/COPYRIGHT.rdoc for more details.
                 <div class="generic-table--sort-header">
                   <span>
                     <% if Setting.use_default_brand == 1 %>
-                      <%= StatusDefault.model_name.human %>
+                      <% base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "") %>
+                      <% default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"] %>
+                      <% ActiveRecord::Base.connect_to(default_brand_db) do %>
+                        <%= Status.model_name.human %>
+                      <% end %>
                     <% else %>
                       <%= Status.model_name.human %>
                     <% end %>
