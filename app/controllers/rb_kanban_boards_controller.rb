@@ -22,14 +22,19 @@ class RbKanbanBoardsController < RbApplicationController
       @selectedworkflow = 0
     end
     if Setting.use_default_brand == 1
-      base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
-      default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
+      p "--------Inside Default Condition === TRUE-------------"
+      p base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
+      p default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
       ActiveRecord::Base.connect_to(default_brand_db) do
-        @workfows_status = WorkflowStatus.where(wi_id: @selectedworkflow)
+        p "++++++++++ Connection Successfull with Default DB +++++++++++++"
+        p @workfows_status = WorkflowStatus.where(wi_id: @selectedworkflow)
       end
     else
       @workfows_status = WorkflowStatus.where(wi_id: @selectedworkflow)
     end
+    p "************** WORKFLOW STATUS **************************"
+    p @workfows_status
+    p "************** WORKFLOW STATUS **************************"
 
     if Setting.use_default_brand == 1
       base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
