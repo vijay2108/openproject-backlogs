@@ -31,6 +31,7 @@ class RbKanbanBoardsController < RbApplicationController
       p default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
       ActiveRecord::Base.connect_to(default_brand_db) do
         p "++++++++++ Connection Successfull with Default DB +++++++++++++"
+        p wi = WorkflowInformation.first
         p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
         p @workfows_status = WorkflowStatus.where(wi_id: @wi_id)
       end
@@ -48,6 +49,7 @@ class RbKanbanBoardsController < RbApplicationController
       p default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
       ActiveRecord::Base.connect_to(default_brand_db) do
         p "Workflows from Default DB Successfull"
+        p wi = WorkflowInformation.last
         p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
         @current_workflows = Workflow.where(type_id: Task.type, wi_id: @wi_id)
       end
