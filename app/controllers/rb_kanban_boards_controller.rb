@@ -21,6 +21,7 @@ class RbKanbanBoardsController < RbApplicationController
     else
       @selectedworkflow = 0
     end
+    @selected_workflow_information = WorkflowInformation.find_by(id: @selectedworkflow).name
     p "************* Setting ***************"
     p Setting.find_by(name: 'use_default_brand').value
     p "************* Setting ***************"
@@ -30,7 +31,8 @@ class RbKanbanBoardsController < RbApplicationController
       p default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
       ActiveRecord::Base.connect_to(default_brand_db) do
         p "++++++++++ Connection Successfull with Default DB +++++++++++++"
-        p @workfows_status = WorkflowStatus.where(wi_id: @selectedworkflow)
+        p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
+        p @workfows_status = WorkflowStatus.where(wi_id: @wi_id)
       end
     else
       p "--------Inside Else Condition---------"
@@ -46,7 +48,8 @@ class RbKanbanBoardsController < RbApplicationController
       p default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
       ActiveRecord::Base.connect_to(default_brand_db) do
         p "Workflows from Default DB Successfull"
-        @current_workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
+        p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
+        @current_workflows = Workflow.where(type_id: Task.type, wi_id: @wi_id)
       end
     else
       @current_workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
@@ -63,7 +66,8 @@ class RbKanbanBoardsController < RbApplicationController
           ActiveRecord::Base.connect_to(default_brand_db) do
             p "Status Data from Default DB"
             p @selectedworkflow
-            p wf_status = WorkflowStatus.find_by(id: workflow.workflow_status_id, wi_id: @selectedworkflow)
+            p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
+            p wf_status = WorkflowStatus.find_by(id: workflow.workflow_status_id, wi_id: @wi_id)
           end
         else
           wf_status = WorkflowStatus.find_by(id: workflow.workflow_status_id, wi_id: @selectedworkflow)
@@ -79,7 +83,8 @@ class RbKanbanBoardsController < RbApplicationController
             base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
             default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
             ActiveRecord::Base.connect_to(default_brand_db) do
-              Workflow.where(wi_id: @selectedworkflow).delete_all
+              p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
+              Workflow.where(wi_id: @wi_id).delete_all
             end
           else
             Workflow.where(wi_id: @selectedworkflow).delete_all
@@ -90,7 +95,8 @@ class RbKanbanBoardsController < RbApplicationController
             base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
             default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
             ActiveRecord::Base.connect_to(default_brand_db) do
-              wf_statuses = WorkflowStatus.where(wi_id: @selectedworkflow)
+              p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
+              wf_statuses = WorkflowStatus.where(wi_id: @wi_id)
             end
           else
             wf_statuses = WorkflowStatus.where(wi_id: @selectedworkflow)
@@ -104,12 +110,13 @@ class RbKanbanBoardsController < RbApplicationController
               base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
               default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
               ActiveRecord::Base.connect_to(default_brand_db) do
+                p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
                 Workflow.create!(
                     type_id: type_id,
                     old_status_id: status.status_id,
                     new_status_id: status.status_id,
                     role_id: role_id,
-                    wi_id: @selectedworkflow,
+                    wi_id: @wi_id,
                     workflow_status_id: status.id
                 )
               end
@@ -129,7 +136,8 @@ class RbKanbanBoardsController < RbApplicationController
             base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
             default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
             ActiveRecord::Base.connect_to(default_brand_db) do
-              status_ids = WorkflowStatus.where(wi_id: @selectedworkflow).pluck(:status_id)
+              p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
+              status_ids = WorkflowStatus.where(wi_id: @wi_id).pluck(:status_id)
             end
           else
             status_ids = WorkflowStatus.where(wi_id: @selectedworkflow).pluck(:status_id)
@@ -152,10 +160,11 @@ class RbKanbanBoardsController < RbApplicationController
               base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
               default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
               ActiveRecord::Base.connect_to(default_brand_db) do
+                p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
                 from_status = Status.find(first_transition_id).name
                 to_status = Status.find(second_transition_id).name
-                from_workflow_status_id = WorkflowStatus.find_by(name: from_status, wi_id: @selectedworkflow).id
-                to_workflow_status_id = WorkflowStatus.find_by(name: to_status, wi_id: @selectedworkflow).id
+                from_workflow_status_id = WorkflowStatus.find_by(name: from_status, wi_id: @wi_id).id
+                to_workflow_status_id = WorkflowStatus.find_by(name: to_status, wi_id: @wi_id).id
               end
             else
               from_status = Status.find(first_transition_id).name
@@ -220,7 +229,8 @@ class RbKanbanBoardsController < RbApplicationController
       base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
       default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
       ActiveRecord::Base.connect_to(default_brand_db) do
-        @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
+        p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
+        @workflows = Workflow.where(type_id: Task.type, wi_id: @wi_id)
       end
     else
       @workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
