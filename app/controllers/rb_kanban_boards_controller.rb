@@ -29,7 +29,8 @@ class RbKanbanBoardsController < RbApplicationController
       p "--------Inside Default Condition === TRUE-------------"
       p base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
       p default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
-      ActiveRecord::Base.connect_to(default_brand_db) do
+      p Rails.env
+      ActiveRecord::Base.connect_to(:staging-243593-sancho-project.wsuite.com) do
         p "++++++++++ Connection Successfull with Default DB +++++++++++++"
         p wi = WorkflowInformation.first
         p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
@@ -47,7 +48,7 @@ class RbKanbanBoardsController < RbApplicationController
       p "Inside Workflow Condition"
       p base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
       p default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
-      ActiveRecord::Base.connect_to(default_brand_db) do
+      ActiveRecord::Base.connect_to(:staging-243593-sancho-project.wsuite.com) do
         p "Workflows from Default DB Successfull"
         p wi = WorkflowInformation.last
         p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
