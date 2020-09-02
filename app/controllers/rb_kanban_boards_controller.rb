@@ -15,25 +15,6 @@ class RbKanbanBoardsController < RbApplicationController
   end
 
   def show
-    staging-243593-sancho-project.wsuite.com:
-    adapter: mysql2
-    database: project_243593
-    host: stage-52137-mysqldb.wsuite.com
-    username: project_243593
-    password: BvbYwS70orzxVUTLW43P9uqM2
-    default_db: staging-243593-sancho-project.wsuite.com
-    encoding: utf8
-    variables:
-        sql_mode:
-        "no_auto_value_on_zero,\
-      strict_trans_tables,\
-      no_zero_date,\
-      strict_all_tables,\
-      no_zero_in_date,\
-      error_for_division_by_zero,\
-      no_auto_create_user,\
-      no_engine_substitution"
-
     @sprint = KanbanBoard.find params[:sprint_id]
     if @sprint.wi_id.present?
       @selectedworkflow = @sprint.wi_id
