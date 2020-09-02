@@ -1,7 +1,7 @@
 class RbKanbanBoardsController < RbApplicationController
   menu_item :backlogs
 
-  helper :taskboards
+  helper :taskboards, :rb_common
 
 
   def create
