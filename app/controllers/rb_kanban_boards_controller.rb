@@ -43,12 +43,20 @@ class RbKanbanBoardsController < RbApplicationController
         p wi = WorkflowInformation.first
         p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
         p @workfows_status = WorkflowStatus.where(wi_id: @wi_id)
-        ActiveRecord::Base.remove_connection(db)
+      p ActiveRecord::Base.remove_connection(db)
       #end
     else
       p "--------Inside Else Condition---------"
       @workfows_status = WorkflowStatus.where(wi_id: @selectedworkflow)
     end
+    ActiveRecord::Base.establish_connection(
+        adapter: "mysql2",
+        database: "project_539893",
+        host: "stage-52137-mysqldb.wsuite.com",
+        username: "project_539893",
+        password: "SfF708p1PiZrY9zukKjTbByx0",
+        default_db: "staging_243593_sancho_project"
+    )
     p "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
     p WorkflowInformation.first
     p "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
