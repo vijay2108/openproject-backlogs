@@ -21,6 +21,9 @@ class RbKanbanBoardsController < RbApplicationController
     else
       @selectedworkflow = 0
     end
+    p "************* Setting ***************"
+    p Setting.use_default_brand
+    p "************* Setting ***************"
     if Setting.use_default_brand.to_i == 1
       p "--------Inside Default Condition === TRUE-------------"
       p base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
