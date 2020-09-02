@@ -41,21 +41,29 @@ class RbKanbanBoardsController < RbApplicationController
     p "************** WORKFLOW STATUS **************************"
 
     if Setting.find_by(name: 'use_default_brand').value == 1
-      base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
-      default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
+      p "Inside Workflow Condition"
+      p base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
+      p default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
       ActiveRecord::Base.connect_to(default_brand_db) do
+        p "Workflows from Default DB Successfull"
         @current_workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
       end
     else
       @current_workflows = Workflow.where(type_id: Task.type, wi_id: @selectedworkflow)
     end
+    p "Workflowssssssssssssssssssssss"
+    p @current_workflows
+    p "Workflowssssssssssssssssssssss"
     @current_workflows.each do |workflow|
       unless workflow.workflow_status_id == 0
         if Setting.find_by(name: 'use_default_brand').value == 1
-          base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
-          default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
+          p "Inside Status"
+          p base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
+          p default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
           ActiveRecord::Base.connect_to(default_brand_db) do
-            wf_status = WorkflowStatus.find_by(id: workflow.workflow_status_id, wi_id: @selectedworkflow)
+            p "Status Data from Default DB"
+            p @selectedworkflow
+            p wf_status = WorkflowStatus.find_by(id: workflow.workflow_status_id, wi_id: @selectedworkflow)
           end
         else
           wf_status = WorkflowStatus.find_by(id: workflow.workflow_status_id, wi_id: @selectedworkflow)
