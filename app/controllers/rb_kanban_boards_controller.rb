@@ -38,7 +38,7 @@ class RbKanbanBoardsController < RbApplicationController
       #     password: "BvbYwS70orzxVUTLW43P9uqM2",
       #     default_db: "staging-243593-sancho-project.wsuite.com"
       # )
-      ActiveRecord::Base.connect_to(default_brand_db) do
+      ActiveRecord::Base.connect_to(:staging_243593_sancho_project) do
         p "++++++++++ Connection Successfull with Default DB +++++++++++++"
         p wi = WorkflowInformation.first
         p @wi_id = WorkflowInformation.find_by(name: @selected_workflow_information).id
