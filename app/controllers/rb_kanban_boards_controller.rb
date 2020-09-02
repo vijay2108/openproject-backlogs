@@ -22,7 +22,7 @@ class RbKanbanBoardsController < RbApplicationController
       @selectedworkflow = 0
     end
     p "************* Setting ***************"
-    p Setting.use_default_brand
+    p Setting.find_by(name: 'use_default_brand').value
     p "************* Setting ***************"
     if Setting.use_default_brand.to_i == 1
       p "--------Inside Default Condition === TRUE-------------"
