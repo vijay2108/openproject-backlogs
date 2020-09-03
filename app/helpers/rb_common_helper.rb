@@ -217,13 +217,9 @@ module RbCommonHelper
 
   def all_workflows
     if Setting.use_default_brand == 1
-      base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
-      default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
-      ActiveRecord::Base.connect_to(default_brand_db) do
-        @all_workflows ||= Workflow.includes([:new_status, :old_status])
-                               .where(role_id: User.current.roles_for_project(@project).map(&:id),
-                                      type_id: story_types.map(&:id))
-      end
+      @all_workflows ||= WorkflowDefault.includes([:new_status, :old_status])
+                             .where(role_id: User.current.roles_for_project(@project).map(&:id),
+                                    type_id: story_types.map(&:id))
     else
       @all_workflows ||= Workflow.includes([:new_status, :old_status])
                              .where(role_id: User.current.roles_for_project(@project).map(&:id),
@@ -233,11 +229,7 @@ module RbCommonHelper
 
   def all_work_package_status
     if Setting.use_default_brand == 1
-      base_url = OpenProject::Configuration.project_base_url.gsub(/https:\/\/|http:\/\//, "")
-      default_brand_db = ActiveRecord::Base.configurations[base_url]["default_db"]
-      ActiveRecord::Base.connect_to(default_brand_db) do
-        @all_work_package_status ||= Status.order('position ASC')
-      end
+      @all_work_package_status ||= StatusDefault.order('position ASC')
     else
       @all_work_package_status ||= Status.order('position ASC')
     end

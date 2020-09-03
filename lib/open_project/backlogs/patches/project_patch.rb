@@ -38,7 +38,11 @@ require_dependency 'project'
 module OpenProject::Backlogs::Patches::ProjectPatch
   def self.included(base)
     base.class_eval do
-      has_and_belongs_to_many :done_statuses, join_table: :done_statuses_for_project, class_name: 'Status'
+      if Setting.use_default_brand == 1
+        has_and_belongs_to_many :done_statuses, join_table: :done_statuses_for_project, class_name: 'StatusDefault'
+      else
+        has_and_belongs_to_many :done_statuses, join_table: :done_statuses_for_project, class_name: 'Status'
+      end
 
       include InstanceMethods
     end
