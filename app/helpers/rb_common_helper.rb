@@ -350,15 +350,4 @@ module RbCommonHelper
       return 'priority-normal'
     end
   end
-
-  def make_db_connection(url)
-    db = ActiveRecord::Base.establish_connection(
-        adapter: ActiveRecord::Base.configurations[url]['adapter'],
-        database: ActiveRecord::Base.configurations[url]['database'],
-        host: ActiveRecord::Base.configurations[url]['host'],
-        username: ActiveRecord::Base.configurations[url]['username'],
-        password: ActiveRecord::Base.configurations[url]['password']
-    )
-    return db
-  end
 end
